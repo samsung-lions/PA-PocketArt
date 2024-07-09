@@ -17,7 +17,7 @@ export const LikePokemon = async () => {
     notFound();
   }
 
-  const pokemonData = data.map((item) => fetchPokemon(item.id.toString()));
+  const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
   const PokemonThatChoseLike = await Promise.all(pokemonData);
 
   return (
