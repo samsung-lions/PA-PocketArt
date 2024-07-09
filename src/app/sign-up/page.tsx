@@ -39,14 +39,41 @@ const SignUpPage = () => {
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
     // if (e.target.value.length < 6) {
-    //   setPasswordConfirm({
+    //   setError({
     //     ...error,
-    //     passwordConfirm: ' 비밀번호 확인은 최소 6자 입니다'
+    //     passwordConfirm: '비밀번호 확인은 최소 6자 입니다.'
+    //   });
+    // } else {
+    //   setError({
+    //     ...error,
+    //     passwordConfirm: ''
     //   });
     // }
+    if (password !== e.target.value) {
+      setError({
+        ...error,
+        passwordConfirm: '비밀번호가 같지 않습니다.'
+      });
+    } else {
+      setError({
+        ...error,
+        passwordConfirm: ''
+      });
+    }
   };
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
+    if (e.target.value.length < 2) {
+      setError({
+        ...error,
+        nickname: '닉네임은 최소 2글자 입니다.'
+      });
+    } else {
+      setError({
+        ...error,
+        nickname: ''
+      });
+    }
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -137,6 +164,7 @@ const SignUpPage = () => {
                   onChange={onChangeNickname}
                 />
               </div>
+              {error.nickname && <p className="text-red-500">{error.nickname}</p>}
               <div className="text-center">
                 <button type="submit" className="px-4 py-2 w-80 bg-yellow-500 text-white rounded">
                   회원가입
