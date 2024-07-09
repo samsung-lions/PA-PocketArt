@@ -1,12 +1,13 @@
 'use client';
 
+import { FanArtSectionProps } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
-const FanArtForm = () => {
+const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
   const [preview, setPreview] = useState<string>('/icons/ic-art.png');
@@ -66,7 +67,7 @@ const FanArtForm = () => {
     const formData = new FormData();
     formData.append('imageFile', imageFile);
     formData.append('content', content);
-    formData.append('postId', '25');
+    formData.append('postId', postId);
 
     createFanArt(formData);
   };

@@ -29,7 +29,9 @@ const FanArtItem = ({ fanArt }: FanArtItemProps) => {
           </div>
           <span className="text-sm text-slate-500">{fanArt.createdAt}</span>
         </div>
+
         <div className="w-full flex-grow text-lg bg-slate-100 text-[#212121] rounded px-6 py-4">{fanArt.content}</div>
+
         <div className="flex justify-end gap-x-2">
           <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>
             수정

@@ -64,7 +64,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
         </div>
       </div>
       <Like />
-      <FanArtSection />
+      <FanArtSection postId={params.id} />
     </Page>
   );
 };

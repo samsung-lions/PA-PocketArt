@@ -3,18 +3,22 @@ import { FanArt } from '@/types/FanArt.type';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const { data, error } = await supabase.from('FanArts').select('*').eq('postId', '25');
+  const { searchParams } = new URL(request.url);
+  const postId = searchParams.get('postId');
+
+  const { data, error } = await supabase.from('FanArts').select('*').eq('postId', postId);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  const fanArts: FanArt[] = data.map((fanArt, index) => ({
-    id: index,
+  const fanArts: FanArt[] = data.map((fanArt) => ({
+    id: fanArt.id,
     content: fanArt.content,
     fanArtURL: fanArt.fanArtURL,
     createdAt: fanArt.createdAt.slice(0, 10),
     user: {
+      id: fanArt.writerId,
       nickname: '작성자 닉네임',
       profileURL: '/icons/ic-main.png'
     }

@@ -50,7 +50,7 @@ const PokemonList = () => {
     <>
       <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
         {pokemons?.pages.flatMap((page) =>
-          page.data.map((pokemon: Pokemon) => (
+          page?.data.map((pokemon: Pokemon) => (
             <li
               key={pokemon.id}
               className="bg-white w-40 h-40 rounded-lg p-4 shadow-md hover:scale-125 transition-transform"
