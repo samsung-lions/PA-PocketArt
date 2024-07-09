@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
-const ReviewForm = () => {
+const FanArtForm = () => {
   const [fanArt, setFanArt] = useState<string | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
@@ -75,4 +75,4 @@ const ReviewForm = () => {
   );
 };
 
-export default ReviewForm;
+export default FanArtForm;

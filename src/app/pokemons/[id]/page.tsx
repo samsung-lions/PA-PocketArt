@@ -1,6 +1,6 @@
 import Chip from '@/components/Chip';
+import FanArtSection from '@/components/FanArtSection';
 import Page from '@/components/Page';
-import ReviewSection from '@/components/ReviewSection';
 import { Pokemon } from '@/types/Pokemon.type';
 import axios from 'axios';
 import { Metadata } from 'next';
@@ -61,7 +61,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
             ))}
           </div>
         </div>
-        <ReviewSection />
+        <FanArtSection />
       </div>
     </Page>
   );
