@@ -2,7 +2,7 @@ import FanArtForm from '../FanArtForm';
 
 const FanArtSection = () => {
   return (
-    <section className="mt-8">
+    <section className="w-full mt-2">
       <FanArtForm />
     </section>
   );
