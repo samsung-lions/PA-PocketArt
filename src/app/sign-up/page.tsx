@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { supabase } from '../../../utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import supabase from '@/supabase/supabase';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -109,7 +109,7 @@ const SignUpPage = () => {
   return (
     <form onSubmit={onSubmit}>
       <div>
-        <div className="bg-black h-14 p-1">
+        <div className="bg-black  p-5">
           <Image src="/logo.png" alt="로고" width={70} height={50} />
         </div>
         <div className="flex justify-center mt-12">
