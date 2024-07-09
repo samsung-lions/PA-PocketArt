@@ -7,7 +7,7 @@ interface PokemonCardProps {
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
-    <div>
+    <div className="cursor-pointer">
       <span className="text-sm">No. {pokemon.id}</span>
       <h3 className="text-xl font-semibold">{pokemon.korean_name || pokemon.name}</h3>
       <div className="flex justify-end">
