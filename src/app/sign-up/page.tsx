@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { supabase } from '../../../utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -9,14 +10,40 @@ const SignUpPage = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
 
+  const [error, setError] = useState({
+    password: '',
+    passwordConfirm: '',
+    nickname: ''
+  });
+
+  const router = useRouter();
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    if (e.target.value.length < 6) {
+      setError({
+        ...error,
+        password: '비밀번호는 최소 6자 이상입니다.'
+      });
+    } else {
+      setError({
+        ...error,
+        password: ''
+      });
+    }
   };
+
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
+    // if (e.target.value.length < 6) {
+    //   setPasswordConfirm({
+    //     ...error,
+    //     passwordConfirm: ' 비밀번호 확인은 최소 6자 입니다'
+    //   });
+    // }
   };
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -24,10 +51,31 @@ const SignUpPage = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (email === '' || password === '' || nickname === '') {
+      alert('빈칸을 채워주세요!');
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 틀립니다!');
+      return;
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password
     });
+
+    const { data: user } = await supabase.from('Users').insert({ id: data.user?.id, email, nickname });
+    console.log(data);
+    //insert
+    if (error) {
+      alert(error.message);
+    }
+    alert('회원가입이 완료되었습니다!');
+
+    router.replace('/');
   };
   //유효성 검사
 
@@ -65,6 +113,7 @@ const SignUpPage = () => {
                   onChange={onChangePassword}
                 />
               </div>
+              {error.password && <p className="text-red-500">{error.password}</p>}
               <div className="mb-4">
                 <label className="block text-left font-medium mb-2">비밀번호 확인</label>
                 <input
@@ -76,6 +125,7 @@ const SignUpPage = () => {
                   onChange={onChangePasswordConfirm}
                 />
               </div>
+              {error.passwordConfirm && <p className="text-red-500">{error.passwordConfirm}</p>}
               <div className="mb-4">
                 <label className="block text-left font-medium mb-2">닉네임</label>
                 <input
