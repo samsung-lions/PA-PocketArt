@@ -2,7 +2,6 @@ import supabase from '@/supabase/supabase';
 import { Pokemon } from '@/types/Pokemon.type';
 import axios from 'axios';
 import Image from 'next/image';
-
 import { notFound } from 'next/navigation';
 
 // 현재 페이지의 포켓몬 상세 데이터를 가져오는 함수
