@@ -34,7 +34,6 @@ function PocketLayout() {
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['pockets', id] });
       const previousPockets: any = queryClient.getQueryData(['pockets', id]);
-      console.log(previousPockets);
       queryClient.setQueryData(['pockets', id], () => {
         return !getLikes?.userLike
           ? { data: [...previousPockets.data, { postId: id, userId }], userLike: true }
