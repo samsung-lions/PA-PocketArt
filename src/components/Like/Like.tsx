@@ -48,14 +48,13 @@ function PocketLayout() {
     },
     onError: (err, addLike, context) => {
       queryClient.setQueryData(['pockets', id], context?.previousPockets);
-    },
-    onSettled: () => {}
+    }
   });
 
   return (
-    <div className="flex flex-row gap-x-3">
+    <div className="w-full m-3 flex flex-row gap-x-3">
       <button onClick={() => addMutation.mutate()}>
-        <span className="text-3xl">{getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART}</span>
+        <span className="text-2xl">{getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART}</span>
         <span>{getLikes?.data?.length || '0'}</span>
       </button>
     </div>
