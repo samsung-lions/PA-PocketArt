@@ -61,20 +61,20 @@ const FanArtForm = () => {
   return (
     <div>
       {isOpenedForm ? (
-        <form className="flex border rounded justify-center p-6 gap-x-6">
+        <form className="flex border rounded justify-center p-6 gap-x-6 bg-slate-100 mb-12">
           <div className="flex justify-center items-center shadow-md rounded hover:scale-110 transition">
             <div className="relative w-[300px] h-[300px] aspect-square">
-              <Image src={preview} alt="Pocket Art" fill className="object-contain" />
+              <Image src={preview} alt="Pocket Art" fill className="object-contain rounded bg-white" />
             </div>
           </div>
           <div className="flex flex-col gap-y-3">
             <input
-              className="border rounded text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-110 file:active:brightness-125 file:hover:scale-105 file:transition"
+              className="border rounded bg-white text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-110 file:active:brightness-125 file:hover:scale-105 file:transition"
               type="file"
               onChange={showFanArtPreview}
             />
             <textarea
-              className="w-full flex-grow bg-slate-100 text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
+              className="w-full flex-grow bg-white text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
               value={content}
               onChange={handleChangeContentTextArea}
               placeholder="팬아트에 대해 소개해주세요."
@@ -90,7 +90,7 @@ const FanArtForm = () => {
           </div>
         </form>
       ) : (
-        <div className="flex justify-end px-3">
+        <div className="flex justify-end px-3 mb-3">
           <Button onClick={changeIsOpenedForm}>팬아트 작성</Button>
         </div>
       )}
