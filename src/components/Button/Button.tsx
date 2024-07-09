@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
 
-const buttonVariant = cva('font-semibold transition hover:brightness-90 active:brightness-75 hover:scale-105', {
+const buttonVariant = cva('font-semibold transition hover:brightness-110 active:brightness-125 hover:scale-105', {
   variants: {
     intent: {
       main: 'rounded bg-[#FFD400] text-[#212121]',

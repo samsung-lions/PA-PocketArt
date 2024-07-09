@@ -1,11 +1,13 @@
 'use client';
 
+import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
 const FanArtForm = () => {
-  const [fanArt, setFanArt] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string>('/icons/ic-art.png');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
 
@@ -13,13 +15,15 @@ const FanArtForm = () => {
     setIsOpenedForm(!isOpenedForm);
   };
 
-  const handleChangeFanArtInput = (e: ChangeEvent<HTMLInputElement>) => {
+  // 팬아트 프리뷰
+  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setImageFile(file || null);
+
     if (file) {
       const previewUrl = URL.createObjectURL(file);
-      setFanArt(previewUrl);
+      setPreview(previewUrl);
 
-      // Clean up the URL object when component unmounts or fanArt changes
       return () => URL.revokeObjectURL(previewUrl);
     }
   };
@@ -28,33 +32,52 @@ const FanArtForm = () => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleSubmitForm = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.preventDefault();
+
+    if (!imageFile || !content) return alert('팬아트와 소개글을 모두 작성해주세요.');
+
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+    formData.append('content', content);
+    formData.append('postId', '25');
+
+    await axios
+      .post('/api/fan-art/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(() => {
+        alert('팬아트가 등록되었습니다!');
+        setIsOpenedForm(false);
+        setImageFile(null);
+        setPreview('/icons/ic-art.png');
+        setContent('');
+      })
+      .catch((error) => console.error('팬아트 등록 실패: ', error));
   };
 
   return (
     <div>
       {isOpenedForm ? (
         <form className="flex border rounded justify-center p-6 gap-x-6">
-          <div className="flex justify-center items-center shadow-md rounded aspect-square hover:scale-110 transition">
-            <Image
-              src={fanArt || '/icons/ic-art.png'}
-              alt="Pocket Art"
-              width={300}
-              height={300}
-              className="object-cover"
-            />
+          <div className="flex justify-center items-center shadow-md rounded hover:scale-110 transition">
+            <div className="relative w-[300px] h-[300px] aspect-square">
+              <Image src={preview} alt="Pocket Art" fill className="object-contain" />
+            </div>
           </div>
           <div className="flex flex-col gap-y-3">
             <input
-              className="border rounded text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-90 file:active:brightness-75 file:hover:scale-105 file:transition"
+              className="border rounded text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-110 file:active:brightness-125 file:hover:scale-105 file:transition"
               type="file"
-              onChange={handleChangeFanArtInput}
+              onChange={showFanArtPreview}
             />
             <textarea
               className="w-full flex-grow bg-slate-100 text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
               value={content}
               onChange={handleChangeContentTextArea}
+              placeholder="팬아트에 대해 소개해주세요."
             />
             <div className="flex justify-end gap-x-2">
               <Button intent={'submit'} type="submit" onClick={handleSubmitForm}>
