@@ -1,15 +1,41 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
 const FanArtForm = () => {
+  const queryClient = useQueryClient();
+
   const [preview, setPreview] = useState<string>('/icons/ic-art.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
+
+  const { mutateAsync: createFanArt } = useMutation({
+    mutationFn: (newFanArt: FormData) =>
+      axios.post('/api/fan-art/create', newFanArt, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }),
+    onSuccess: () => {
+      alert('팬아트가 등록되었습니다!');
+
+      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+
+      // 폼 초기화
+      setIsOpenedForm(false);
+      setImageFile(null);
+      setPreview('/icons/ic-art.png');
+      setContent('');
+    },
+    onError: (error) => {
+      console.error('팬아트 등록 실패: ', error);
+    }
+  });
 
   const changeIsOpenedForm = () => {
     setIsOpenedForm(!isOpenedForm);
@@ -42,20 +68,7 @@ const FanArtForm = () => {
     formData.append('content', content);
     formData.append('postId', '25');
 
-    await axios
-      .post('/api/fan-art/create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(() => {
-        alert('팬아트가 등록되었습니다!');
-        setIsOpenedForm(false);
-        setImageFile(null);
-        setPreview('/icons/ic-art.png');
-        setContent('');
-      })
-      .catch((error) => console.error('팬아트 등록 실패: ', error));
+    createFanArt(formData);
   };
 
   return (
