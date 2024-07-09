@@ -21,11 +21,16 @@ const PokemonListPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [searchInfo, setSearchInfo] = useState({ search: '', category: '' });
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchPokemons(searchParams);
       setPokemons(data);
+      setSearchInfo({
+        search: searchParams.get('search') || '',
+        category: searchParams.get('category') === 'name' ? '이름' : '도감번호'
+      });
     };
 
     fetchData();
@@ -40,6 +45,11 @@ const PokemonListPage = () => {
       <div className="w-full flex justify-start px-4 mb-4" onClick={handleBackClick}>
         <img src="/icons/ic-back.png" alt="뒤로가기 버튼" width={30} height={30} className="cursor-pointer" />
       </div>
+      {searchInfo.search && (
+        <div className="text-center text-lg font-semibold mb-4">
+          '{searchInfo.search}'에 대한 검색 결과 ({searchInfo.category})
+        </div>
+      )}
       <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
         {pokemons.map((pokemon) => (
           <li
