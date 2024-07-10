@@ -36,7 +36,7 @@ const MyProfile = () => {
         className="hidden"
       />
       <Image
-        className="rounded-full cursor-pointer w-[45px] h-[45px]"
+        className="rounded-full cursor-pointer w-100 h-100 bg-black"
         width={200}
         height={200}
         src={profileUrl}
