@@ -13,7 +13,7 @@ export const ConfirmContext = createContext(initialValue);
 export const useConfirm = () => useContext(ConfirmContext);
 
 export function ConfirmProvider({ children }: PropsWithChildren) {
-  const [modalOptions, setModalOptions] = useState<ModalType | null>(null);
+  const [modalOptions, setModalOptions] = useState<ModalProps['modalOptions']>(null);
   const value = {
     modalOptions,
     on: (toast: ModalType) => {
