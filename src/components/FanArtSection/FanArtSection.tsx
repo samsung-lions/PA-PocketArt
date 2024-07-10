@@ -36,9 +36,9 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
       ) : (
         <ul className="border rounded">
           {fanArts?.data.length !== 0 ? (
-            fanArts?.data.reverse().map((fanArt: FanArt) => (
+            fanArts?.data.map((fanArt: FanArt) => (
               <li key={fanArt.id} className="rounded p-4">
-                <FanArtItem fanArt={fanArt} />
+                <FanArtItem postId={postId} fanArt={fanArt} />
               </li>
             ))
           ) : (

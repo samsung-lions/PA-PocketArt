@@ -15,3 +15,8 @@ export type FanArt = {
 export interface FanArtSectionProps {
   postId: string;
 }
+
+export interface FanArtItemProps {
+  postId: string;
+  fanArt: FanArt;
+}

@@ -1,3 +1,4 @@
+import { FormModalProvider } from '@/contexts/formModal.context';
 import { ToastProvider } from '@/contexts/toast.context';
 import QueryProvider from '@/react-query/QueryProvider';
 import type { Metadata } from 'next';
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
-          <ToastProvider>{children}</ToastProvider>
+          <ToastProvider>
+            <FormModalProvider>{children}</FormModalProvider>
+          </ToastProvider>
         </QueryProvider>
       </body>
     </html>

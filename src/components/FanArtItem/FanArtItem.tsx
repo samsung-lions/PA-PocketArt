@@ -1,20 +1,18 @@
 'use client';
 
+import { useFormModal } from '@/contexts/formModal.context';
 import { useToast } from '@/contexts/toast.context';
-import { FanArt } from '@/types/FanArt.type';
+import { FanArtItemProps } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import Button from '../Button';
 
-interface FanArtItemProps {
-  fanArt: FanArt;
-}
-
-const FanArtItem = ({ fanArt }: FanArtItemProps) => {
+const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
+  const form = useFormModal();
 
   const { mutate: deleteFanArt } = useMutation({
     mutationFn: async (id: string) => await axios.delete(`/api/fan-art/delete?id=${id}`),
@@ -26,7 +24,9 @@ const FanArtItem = ({ fanArt }: FanArtItemProps) => {
     onError: (error) => console.error('팬아트 삭제 실패: ', error)
   });
 
-  const handleClickUpdateButton = () => {};
+  const handleClickUpdateButton = () => {
+    form.open({ postId, fanArt });
+  };
 
   const handleClickDeleteButton = async () => {
     const check = confirm('팬아트를 삭제하시겠습니까?');
