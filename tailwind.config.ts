@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const config = {
   darkMode: ['class'],
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,7 +12,10 @@ const config = {
     container: {
       center: true,
       padding: '2rem',
+      padding: '2rem',
       screens: {
+        '2xl': '1400px'
+      }
         '2xl': '1400px'
       }
     },
@@ -81,3 +85,9 @@ const config = {
 } satisfies Config;
 
 export default config;
+=========
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config
+>>>>>>>>> Temporary merge branch 2
