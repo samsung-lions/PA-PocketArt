@@ -1,6 +1,6 @@
 export type ToastProps = {
-  on: (toast: any) => void;
-  off: (id: any) => void;
+  on: (toast: ToastType) => void;
+  off: (id: string) => void;
 };
 export type ToastType = {
   id: string;
@@ -9,7 +9,7 @@ export type ToastType = {
 
 export type ModalProps = {
   modalOptions: ModalType | null;
-  on: (toast: any) => void;
+  on: (toast: ModalType) => void;
   off: () => void;
 };
 export type ModalType = {

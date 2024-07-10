@@ -1,5 +1,5 @@
 'use client';
-import { ModalProps, ModalType } from '@/types/toast.type';
+import { ModalProps } from '@/types/toast.type';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 const initialValue: ModalProps = {
@@ -14,9 +14,9 @@ export const useConfirm = () => useContext(ConfirmContext);
 
 export function ConfirmProvider({ children }: PropsWithChildren) {
   const [modalOptions, setModalOptions] = useState<ModalProps['modalOptions']>(null);
-  const value = {
+  const value: ModalProps = {
     modalOptions,
-    on: (toast: ModalType) => {
+    on: (toast) => {
       setModalOptions(toast);
     },
     off: () => {
