@@ -16,7 +16,7 @@ export const useToast = () => useContext(ToastContext);
 export function ToastProvider({ children }: PropsWithChildren) {
   const [toasts, setToasts] = useState<ToastType[]>([]);
   const value = {
-    on: (toast: any) => {
+    on: (toast: ToastType) => {
       const id = crypto.randomUUID();
       if (toasts.some((t) => t.label === toast.label)) return;
       setToasts((prev) => [...prev, { ...toast, id }]);
@@ -25,7 +25,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
         setToasts((prev) => prev.filter((toast) => toast.id !== id));
       }, 2000);
     },
-    off: (id: any) => {
+    off: (id: string) => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
     }
   };

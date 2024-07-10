@@ -1,11 +1,14 @@
 'use client';
 
 import { PAGE_SIZE } from '@/app/api/pokemons/route';
+import { useConfirm } from '@/contexts/confirm.context';
+import { useToast } from '@/contexts/toast.context';
 import { Pokemon } from '@/types/Pokemon.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
+import ConfirmModal from '../ConfirmModal';
 import PokemonCard from '../PokemonCard';
 
 // 포켓몬 데이터를 가져오는 함수
@@ -16,6 +19,8 @@ const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
 };
 
 const PokemonList = () => {
+  const modal = useConfirm();
+  const toast = useToast();
   const {
     data: pokemons,
     fetchNextPage,
@@ -37,6 +42,11 @@ const PokemonList = () => {
     rootMargin: '200px' // 뷰포트 끝에서 200px 지점에 도달하면 콜백 실행
   });
 
+  const handleClick = () => {
+    console.log('확인 누름');
+
+    modal.off();
+  };
   // inView 값이 true로 변경될 때 fetchNextPage 호출
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchNextPage();
@@ -48,6 +58,9 @@ const PokemonList = () => {
 
   return (
     <>
+      {modal.modalOptions && <ConfirmModal modalOptions={modal.modalOptions} handleClick={handleClick} />}
+      <button onClick={() => modal.on({ label: '확인하시겠습니까?' })}>모달</button>
+      <button onClick={() => toast.on({ label: '확인하시겠습니까?' })}>모달</button>
       <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
         {pokemons?.pages.flatMap((page) =>
           page.data.map((pokemon: Pokemon) => (
