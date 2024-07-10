@@ -1,5 +1,6 @@
 'use client';
 
+import { useToast } from '@/contexts/toast.context';
 import { FanArt } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -13,10 +14,12 @@ interface FanArtItemProps {
 const FanArtItem = ({ fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync: deleteFanArt } = useMutation({
-    mutationFn: (id: string) => axios.delete(`/api/fan-art/delete?id=${id}`),
+  const toast = useToast();
+
+  const { mutate: deleteFanArt } = useMutation({
+    mutationFn: async (id: string) => await axios.delete(`/api/fan-art/delete?id=${id}`),
     onSuccess: () => {
-      alert('팬아트가 삭제되었습니다.');
+      toast.on({ label: '팬아트가 삭제되었습니다' });
 
       queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
     },

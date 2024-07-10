@@ -1,5 +1,6 @@
 'use client';
 
+import { useToast } from '@/contexts/toast.context';
 import { FanArtSectionProps } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -10,20 +11,22 @@ import Button from '../Button';
 const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
+  const toast = useToast();
+
   const [preview, setPreview] = useState<string>('/icons/ic-art.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
 
-  const { mutateAsync: createFanArt } = useMutation({
-    mutationFn: (newFanArt: FormData) =>
-      axios.post('/api/fan-art/create', newFanArt, {
+  const { mutate: createFanArt } = useMutation({
+    mutationFn: async (newFanArt: FormData) =>
+      await axios.post('/api/fan-art/create', newFanArt, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }),
     onSuccess: () => {
-      alert('팬아트가 등록되었습니다!');
+      toast.on({ label: '팬아트가 등록되었습니다!' });
 
       queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
 
@@ -61,7 +64,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.preventDefault();
 
-    if (!imageFile || !content) return alert('팬아트와 소개글을 모두 작성해주세요.');
+    if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
 
     const formData = new FormData();
     formData.append('imageFile', imageFile);

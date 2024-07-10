@@ -1,3 +1,4 @@
+import { ToastProvider } from '@/contexts/toast.context';
 import QueryProvider from '@/react-query/QueryProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );
