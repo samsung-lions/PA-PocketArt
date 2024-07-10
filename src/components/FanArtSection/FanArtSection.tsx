@@ -1,8 +1,9 @@
 'use client';
 
 import { FanArt, FanArtSectionProps } from '@/types/FanArt.type';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useEffect } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
 
@@ -14,10 +15,18 @@ const fetchFanArts = async (postId: string) => {
 };
 
 const FanArtSection = ({ postId }: FanArtSectionProps) => {
+  const queryClient = useQueryClient();
+
   const { data: fanArts, isLoading } = useQuery({
     queryKey: ['fanArt', { list: true }],
     queryFn: () => fetchFanArts(postId)
   });
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+    };
+  }, []);
 
   return (
     <section className="w-full mt-1">

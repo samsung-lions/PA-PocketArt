@@ -5,10 +5,25 @@ export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
-  const { error } = await supabase.from('FanArts').delete().eq('id', id);
+  const { data, error: selectError } = await supabase.from('FanArts').select().eq('id', id);
+  const imageURL: string = data?.[0].fanArtURL.split('/').slice(-1)[0] || '';
 
-  if (error) {
-    throw new Error(error.message);
+  console.log('이미지: ' + imageURL);
+
+  if (selectError) {
+    throw new Error(selectError.message);
+  }
+
+  const { error: storageError } = await supabase.storage.from('fanArts').remove([imageURL]);
+
+  if (storageError) {
+    throw new Error(storageError.message);
+  }
+
+  const { error: deleteError } = await supabase.from('FanArts').delete().eq('id', id);
+
+  if (deleteError) {
+    throw new Error(deleteError.message);
   }
 
   return NextResponse.json('팬아트가 삭제되었습니다');

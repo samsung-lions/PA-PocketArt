@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     throw new Error(imageFileError.message);
   }
 
-  const fanArtURL = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + imageFileData?.fullPath;
+  const fanArtURL = imageFileData?.fullPath;
 
   const { error: tableError } = await supabase.from('FanArts').insert({ content, fanArtURL, postId });
 
