@@ -1,4 +1,5 @@
 import Chip from '@/components/Chip';
+import FanArtSection from '@/components/FanArtSection';
 import Like from '@/components/Like';
 import Page from '@/components/Page';
 import { Pokemon } from '@/types/Pokemon.type';
@@ -63,6 +64,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
         </div>
       </div>
       <Like />
+      <FanArtSection postId={params.id} />
     </Page>
   );
 };

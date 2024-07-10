@@ -1,15 +1,31 @@
-'use cent';
-import supabase from '@/supabase/supabase';
+'use client';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase'; // Supabase 데이터베이스 타입을 정의해야 합니다
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const MyContent = async () => {
-  const { data: comments, error } = await supabase.from('FanArts').select('*');
-  if (error) {
-    notFound();
-  }
+type Comment = Database['public']['Tables']['FanArts']['Row'];
+
+const MyContent: React.FC = () => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const router = useRouter();
+  const supabase = createClientComponentClient<Database>();
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const { data, error } = await supabase.from('FanArts').select('*');
+      if (error) {
+        console.error('Error fetching comments:', error);
+        router.push('/404');
+      } else {
+        setComments(data || []);
+      }
+    };
+
+    fetchComments();
+  }, [router, supabase]);
 
   return (
     <div className="min-h-screen p-8">
@@ -18,14 +34,14 @@ const MyContent = async () => {
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className=" rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
+            className="rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
           >
-            <Link href={`/pokemons/${comment.id}`}>
+            <Link href={`/pokemons/${comment.postId}`}>
               <div className="h-48 relative">
-                <Image src={comment.fanArtURL} alt="" layout="fill" objectFit="contain" className="w-full h-full" />
+                <Image src={comment.fanArtURL} alt="" fill className="object-contain" />
               </div>
               <div className="p-4">
-                <p className="text-black text-lg font-semibold mb-2">Fan Art #{comment.id}</p>
+                <p className="text-black text-lg font-semibold mb-2">Fan Art #{comment.postId}</p>
                 <p className="text-gray-700">{comment.content}</p>
               </div>
             </Link>

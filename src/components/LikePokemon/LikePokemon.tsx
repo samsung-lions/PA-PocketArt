@@ -6,7 +6,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
-
+import Link from 'next/link';
 // Swiper 스타일 임포트
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -67,18 +67,20 @@ export const LikePokemon = () => {
       >
         {pokemonList.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="  p-4 rounded-lg shadow-md transition-transform hover:scale-105">
-              <h3 className=" text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
-              <div className="flex justify-center">
-                <Image
-                  src={item.sprites.front_default}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className="rounded-full  p-2"
-                />
+            <Link href={`/pokemons/${item.id}`}>
+              <div className="  p-4 rounded-lg shadow-md transition-transform hover:scale-105">
+                <h3 className=" text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
+                <div className="flex justify-center">
+                  <Image
+                    src={item.sprites.front_default}
+                    alt={item.name}
+                    width={100}
+                    height={100}
+                    className="rounded-full  p-2"
+                  />
+                </div>
               </div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
