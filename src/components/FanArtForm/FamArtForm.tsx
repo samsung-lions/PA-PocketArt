@@ -33,11 +33,10 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
       setPreview('/icons/ic-art.png');
       setContent('');
     },
-    onError: (error) => {
-      console.error('팬아트 등록 실패: ', error);
-    }
+    onError: (error) => console.error('팬아트 등록 실패: ', error)
   });
 
+  // 팬아트 입력 폼 open/close 함수
   const changeIsOpenedForm = () => {
     setIsOpenedForm(!isOpenedForm);
   };
@@ -59,7 +58,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.preventDefault();
 
     if (!imageFile || !content) return alert('팬아트와 소개글을 모두 작성해주세요.');
