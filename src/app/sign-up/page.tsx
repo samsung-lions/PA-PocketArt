@@ -108,16 +108,16 @@ const SignUpPage = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div>
+      <div className=" bg-gray-100 min-h-screen ">
         <div className="bg-black  p-5">
           <Image src="/logo.png" alt="로고" width={70} height={50} />
         </div>
         <div className="flex justify-center mt-12">
-          <div className="text-center border border-black w-60 rounded-full text-lg font-bold p-4 ">회원가입</div>
+          <div className="text-center w-60 rounded-full text-3xl font-bold p-4 bg-white shadow-md">회원가입</div>
         </div>
         <div>
-          <div className="flex justify-center mt-12">
-            <div className="w-100 rounded-lg text-lg font-bold p-4 border border-black">
+          <div className="flex justify-center  mt-12">
+            <div className="w-96 rounded-lg text-lg font-bold p-8 bg-white shadow-lg">
               <div className="mb-4">
                 <label className="block text-left font-medium mb-2">이메일</label>
                 <input
