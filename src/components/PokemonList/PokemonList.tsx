@@ -7,15 +7,18 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 import PokemonCard from '../PokemonCard';
+import { useState } from 'react';
+import Spinner from '../Spinner';
 
 // 포켓몬 데이터를 가져오는 함수
 const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
   const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
-
   return { data, nextPage: pageParam + 1 };
 };
 
 const PokemonList = () => {
+  const [loading, setLoading] = useState(false);
+
   const {
     data: pokemons,
     fetchNextPage,
@@ -46,8 +49,13 @@ const PokemonList = () => {
     return <div className="text-xl font-semibold text-center py-10">몬스터 볼 던지는 중...🍃</div>;
   }
 
+  const handleCardClick = () => {
+    setLoading(true);
+  };
+
   return (
     <>
+      {loading && <Spinner />}
       <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
         {pokemons?.pages.flatMap((page) =>
           page?.data.map((pokemon: Pokemon) => (
@@ -55,7 +63,7 @@ const PokemonList = () => {
               key={pokemon.id}
               className="bg-white w-40 h-40 rounded-lg p-4 shadow-md hover:scale-125 transition-transform"
             >
-              <Link href={`/pokemons/${pokemon.id}`}>
+              <Link href={`/pokemons/${pokemon.id}`} onClick={handleCardClick}>
                 <PokemonCard pokemon={pokemon} />
               </Link>
             </li>
