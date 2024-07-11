@@ -9,7 +9,6 @@ export type Database = {
           createdAt: string;
           fanArtURL: string;
           id: number;
-          pokeId: number;
           postId: string;
           writerId: string;
         };

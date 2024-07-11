@@ -1,3 +1,6 @@
+import { ConfirmProvider } from '@/contexts/confirm.context';
+import { FormModalProvider } from '@/contexts/formModal.context';
+import { ToastProvider } from '@/contexts/toast.context';
 import QueryProvider from '@/react-query/QueryProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -21,7 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <ToastProvider>
+            <ConfirmProvider>
+              <FormModalProvider>{children}</FormModalProvider>
+            </ConfirmProvider>
+          </ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );

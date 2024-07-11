@@ -1,5 +1,4 @@
 import supabase from '@/supabase/supabase';
-import { nanoid } from 'nanoid';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -8,11 +7,9 @@ export async function POST(request: NextRequest) {
   const content = data.get('content') as string;
   const postId = data.get('postId') as string;
 
-  // 파일 확장자 추출 & 파일 이름 생성
   const extension = imageFile.name.split('.').slice(-1)[0];
-  const filename = `/${nanoid()}.${extension}`;
+  const filename = `/${crypto.randomUUID()}.${extension}`;
 
-  // Supabase에 파일 업로드
   const { data: imageFileData, error: imageFileError } = await supabase.storage
     .from('fanArts')
     .upload(filename, imageFile);
@@ -21,12 +18,12 @@ export async function POST(request: NextRequest) {
     throw new Error(imageFileError.message);
   }
 
-  const fanArtURL = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + imageFileData?.fullPath;
+  const fanArtURL = imageFileData?.fullPath;
 
-  const { error: tableError } = await supabase.from('FanArts').insert({ content, fanArtURL, postId });
+  const { error: insertError } = await supabase.from('FanArts').insert({ content, fanArtURL, postId });
 
-  if (tableError) {
-    throw new Error(tableError.message);
+  if (insertError) {
+    throw new Error(insertError.message);
   }
 
   return NextResponse.json('팬아트 리뷰 등록 완료!');

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const postId = searchParams.get('postId');
+  const postId = searchParams.get('postId') as string;
 
   const { data, error } = await supabase.from('FanArts').select('*').eq('postId', postId);
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const fanArts: FanArt[] = data.map((fanArt) => ({
     id: fanArt.id,
     content: fanArt.content,
-    fanArtURL: fanArt.fanArtURL,
+    fanArtURL: 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + fanArt.fanArtURL,
     createdAt: fanArt.createdAt.slice(0, 10),
     user: {
       id: fanArt.writerId,

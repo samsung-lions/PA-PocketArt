@@ -50,7 +50,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
           <div className="flex flex-col justify-center gap-y-3">
             <h3 className="text-xl font-semibold text-center">이름: {pokemon.korean_name || pokemon.name}</h3>
             <p className="text-center">
-              키: {pokemon.height}m / 무게: {pokemon.weight}kg
+              키: {pokemon.height / 10}m / 무게: {pokemon.weight / 10}kg
             </p>
             <div className="flex justify-center gap-x-3">
               <div className="flex items-center gap-x-1">
