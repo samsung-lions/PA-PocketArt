@@ -1,13 +1,25 @@
+import { itemCountPerPage } from '@/components/FanArtSection/FanArtSection';
 import supabase from '@/supabase/supabase';
 import { FanArt } from '@/types/FanArt.type';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, page: number) {
   const { searchParams } = new URL(request.url);
   const postId = searchParams.get('postId') as string;
 
-  const { data, error } = await supabase.from('FanArts').select('*').eq('postId', postId);
+  if (!postId) {
+    return NextResponse.json({ error: 'postId is required' }, { status: 400 });
+  }
+  const start = (page - 1) * itemCountPerPage;
+  const end = itemCountPerPage * page - 1;
 
+  const { count } = await supabase.from('FanArts').select('id', { count: 'exact', head: true }).eq('postId', postId);
+  const { data, error } = await supabase
+    .from('FanArts')
+    .select('*')
+    .eq('postId', postId)
+    .order('id', { ascending: false })
+    .range(start, end);
   if (error) {
     throw new Error(error.message);
   }
@@ -24,5 +36,5 @@ export async function GET(request: NextRequest) {
     }
   }));
 
-  return NextResponse.json(fanArts);
+  return NextResponse.json({ fanArts, count });
 }
