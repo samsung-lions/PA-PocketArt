@@ -39,7 +39,12 @@ const MyContent: React.FC = () => {
           >
             <Link href={`/pokemons/${comment.postId}`}>
               <div className="h-48 relative">
-                <Image src={comment.fanArtURL} alt="Pocket Art" fill className="object-contain" />
+                <Image
+                  src={`https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/${comment.fanArtURL}`}
+                  alt="Pocket Art"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <div className="p-4">
                 <p className="text-black text-lg font-semibold mb-2">Fan Art #{comment.postId}</p>
