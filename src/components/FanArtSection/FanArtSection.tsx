@@ -1,23 +1,31 @@
 'use client';
 
 import { FanArt, FanArtSectionProps } from '@/types/FanArt.type';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useEffect } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
 
-// 팬아트 댓글을 조회하는 함수
-const fetchFanArts = async (postId: string) => {
+const fetchFanArts = async (postId: string): Promise<{ data: FanArt[] }> => {
   const { data } = await axios.get(`/api/fan-art/read?postId=${postId}`);
 
   return { data };
 };
 
 const FanArtSection = ({ postId }: FanArtSectionProps) => {
+  const queryClient = useQueryClient();
+
   const { data: fanArts, isLoading } = useQuery({
     queryKey: ['fanArt', { list: true }],
     queryFn: () => fetchFanArts(postId)
   });
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+    };
+  }, []);
 
   return (
     <section className="w-full mt-1">
@@ -27,9 +35,9 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
       ) : (
         <ul className="border rounded">
           {fanArts?.data.length !== 0 ? (
-            fanArts?.data.reverse().map((fanArt: FanArt) => (
+            fanArts?.data.map((fanArt: FanArt) => (
               <li key={fanArt.id} className="rounded p-4">
-                <FanArtItem fanArt={fanArt} />
+                <FanArtItem postId={postId} fanArt={fanArt} />
               </li>
             ))
           ) : (
