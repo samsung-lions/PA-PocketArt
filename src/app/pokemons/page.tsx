@@ -1,15 +1,14 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
 import Page from '@/components/Page';
-import { Pokemon } from '@/types/Pokemon.type';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import PokemonCard from '@/components/PokemonCard';
-import Link from 'next/link';
-import Image from 'next/image';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import Spinner from '@/components/Spinner/Spinner';
+import { Pokemon } from '@/types/Pokemon.type';
+import axios from 'axios';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const fetchPokemons = async (searchParams: URLSearchParams) => {
   const search = searchParams.get('search') || '';

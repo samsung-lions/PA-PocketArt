@@ -10,38 +10,39 @@ import Button from '../Button';
 
 const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
+
   const toast = useToast();
+
   const [preview, setPreview] = useState<string>('/icons/ic-art.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
 
-  const { mutateAsync: createFanArt } = useMutation({
+  const { mutate: createFanArt } = useMutation({
     mutationFn: (newFanArt: FormData) =>
       axios.post('/api/fan-art/create', newFanArt, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }),
-    onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
+    onSuccess: () => {
       toast.on({ label: '팬아트가 등록되었습니다!' });
+
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
+
       setIsOpenedForm(false);
       setImageFile(null);
       setPreview('/icons/ic-art.png');
       setContent('');
     },
-    onError: (error) => {
-      console.error('팬아트 등록 실패: ', error);
-    }
+    onError: (error) => console.error('팬아트 등록 실패: ', error)
   });
 
-  const changeIsOpenedForm = () => {
+  const changeIsOpenedForm = (): void => {
     setIsOpenedForm(!isOpenedForm);
   };
 
-  // 팬아트 프리뷰
-  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
+  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>): (() => void) | undefined => {
     const file = e.target.files?.[0];
     setImageFile(file || null);
 
@@ -53,14 +54,14 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     }
   };
 
-  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
     e.preventDefault();
 
-    if (!imageFile || !content) return alert('팬아트와 소개글을 모두 작성해주세요.');
+    if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
 
     const formData = new FormData();
     formData.append('imageFile', imageFile);
