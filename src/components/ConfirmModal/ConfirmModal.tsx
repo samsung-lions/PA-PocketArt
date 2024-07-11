@@ -7,7 +7,7 @@ import BackDrop from '../BackDrop';
 import Button from '../Button';
 interface ModalProps {
   modalOptions: ModalType | null;
-  handleClick: () => void;
+  handleClick: () => void | Promise<void>;
 }
 function ConfirmModal({ modalOptions, handleClick }: ModalProps) {
   const modal = useConfirm();
