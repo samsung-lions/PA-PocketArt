@@ -36,7 +36,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   const handleClickDeleteButton = async (): Promise<void> => {
     deleteFanArt(fanArt.id.toString());
   };
-  const confirmDelete = () => {
+  const confirmDelete = (): void => {
     setIsClickDeleteButton(true);
   };
 
