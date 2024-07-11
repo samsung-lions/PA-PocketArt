@@ -24,11 +24,11 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
     onError: (error) => console.error('팬아트 삭제 실패: ', error)
   });
 
-  const handleClickUpdateButton = () => {
+  const handleClickUpdateButton = (): void => {
     form.open({ postId, fanArt });
   };
 
-  const handleClickDeleteButton = async () => {
+  const handleClickDeleteButton = async (): Promise<void> => {
     const check = confirm('팬아트를 삭제하시겠습니까?');
 
     if (check) {

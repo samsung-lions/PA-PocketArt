@@ -35,7 +35,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
   });
 
   useEffect(() => {
-    const urlToFile = async (url: string) => {
+    const urlToFile = async (url: string): Promise<File> => {
       const response = await fetch(url);
       const blob = await response.blob();
       const filename = url.split('/').slice(-1)[0];
@@ -44,7 +44,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
       return new File([blob], filename, metadata);
     };
 
-    const initializeImageFile = async () => {
+    const initializeImageFile = async (): Promise<void> => {
       const file = await urlToFile(fanArt.fanArtURL);
       setImageFile(file);
     };
@@ -52,7 +52,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     initializeImageFile();
   }, []);
 
-  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
+  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>): (() => void) | undefined => {
     const file = e.target.files?.[0];
     setImageFile(file || null);
 
@@ -64,11 +64,11 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     }
   };
 
-  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
     e.preventDefault();
 
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
@@ -86,7 +86,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     }
   };
 
-  const handleClickCloseButton = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleClickCloseButton = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
     const check = confirm('수정을 취소하시겠습니까?');
 
     if (check) {

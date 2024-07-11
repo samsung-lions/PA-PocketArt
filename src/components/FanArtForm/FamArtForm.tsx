@@ -38,11 +38,11 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     onError: (error) => console.error('팬아트 등록 실패: ', error)
   });
 
-  const changeIsOpenedForm = () => {
+  const changeIsOpenedForm = (): void => {
     setIsOpenedForm(!isOpenedForm);
   };
 
-  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
+  const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>): (() => void) | undefined => {
     const file = e.target.files?.[0];
     setImageFile(file || null);
 
@@ -54,11 +54,11 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     }
   };
 
-  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeContentTextArea = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
     e.preventDefault();
 
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });

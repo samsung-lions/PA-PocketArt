@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
 
-const fetchFanArts = async (postId: string) => {
+const fetchFanArts = async (postId: string): Promise<{ data: FanArt[] }> => {
   const { data } = await axios.get(`/api/fan-art/read?postId=${postId}`);
 
   return { data };
