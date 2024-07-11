@@ -30,7 +30,6 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
 
       queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
 
-      // 폼 초기화
       setIsOpenedForm(false);
       setImageFile(null);
       setPreview('/icons/ic-art.png');
@@ -39,12 +38,10 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     onError: (error) => console.error('팬아트 등록 실패: ', error)
   });
 
-  // 팬아트 입력 폼 open/close 함수
   const changeIsOpenedForm = () => {
     setIsOpenedForm(!isOpenedForm);
   };
 
-  // 팬아트 프리뷰
   const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImageFile(file || null);

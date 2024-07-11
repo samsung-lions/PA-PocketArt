@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   const content = data.get('content') as string;
   const postId = data.get('postId') as string;
 
-  // 파일 확장자 추출 & 파일 이름 생성
   const extension = imageFile.name.split('.').slice(-1)[0];
   const filename = `/${crypto.randomUUID()}.${extension}`;
 

@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
 
-// 팬아트 댓글을 조회하는 함수
 const fetchFanArts = async (postId: string) => {
   const { data } = await axios.get(`/api/fan-art/read?postId=${postId}`);
 

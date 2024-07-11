@@ -29,18 +29,12 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
 
       queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
 
-      // 폼 초기화
-      // setIsOpenedForm(false);
-      // setImageFile(null);
-      // setPreview('/icons/ic-art.png');
-      // setContent('');
       form.close();
     },
     onError: (error) => console.error('팬아트 수정 실패: ', error)
   });
 
   useEffect(() => {
-    // URL을 Blob으로 변환하고 Blob을 File로 변환하는 함수
     const urlToFile = async (url: string) => {
       const response = await fetch(url);
       const blob = await response.blob();
@@ -58,7 +52,6 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     initializeImageFile();
   }, []);
 
-  // 팬아트 프리뷰
   const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImageFile(file || null);

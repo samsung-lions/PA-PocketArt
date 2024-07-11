@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
   const id = Number(data.get('id') as string);
   const prevFanArtURL = data.get('fanArtURL') as string;
 
-  console.log('이미지 파일 이름', imageFile.name);
-
   const filename = prevFanArtURL.split('/').slice(-1)[0];
 
   const { error: imageDeleteError } = await supabase.storage.from('fanArts').remove([filename]);
@@ -18,7 +16,6 @@ export async function POST(request: NextRequest) {
     throw new Error(imageDeleteError.message);
   }
 
-  // 파일 확장자 추출 & 파일 이름 생성
   const extension = imageFile.name.split('.').slice(-1)[0];
   const newFilename = `/${crypto.randomUUID()}.${extension}`;
 
