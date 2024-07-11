@@ -1,12 +1,11 @@
 import supabase from '@/supabase/supabase';
-import { UUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const data = await request.formData();
   const imageFile = data.get('imageFile') as File;
   const content = data.get('content') as string;
-  const id = data.get('id') as UUID;
+  const id = Number(data.get('id') as string);
   const prevFanArtURL = data.get('fanArtURL') as string;
 
   console.log('이미지 파일 이름', imageFile.name);

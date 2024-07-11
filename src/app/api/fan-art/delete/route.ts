@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
+  const id = Number(searchParams.get('id'));
 
   const { data, error: selectError } = await supabase.from('FanArts').select().eq('id', id);
   const imageURL: string = data?.[0].fanArtURL.split('/').slice(-1)[0] || '';

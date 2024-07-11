@@ -1,3 +1,4 @@
+import { ConfirmProvider } from '@/contexts/confirm.context';
 import { FormModalProvider } from '@/contexts/formModal.context';
 import { ToastProvider } from '@/contexts/toast.context';
 import QueryProvider from '@/react-query/QueryProvider';
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <QueryProvider>
           <ToastProvider>
-            <FormModalProvider>{children}</FormModalProvider>
+            <ConfirmProvider>
+              <FormModalProvider>{children}</FormModalProvider>
+            </ConfirmProvider>
           </ToastProvider>
         </QueryProvider>
       </body>

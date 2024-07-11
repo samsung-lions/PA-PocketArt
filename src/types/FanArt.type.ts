@@ -1,12 +1,10 @@
-import { UUID } from 'crypto';
-
 export type FanArt = {
-  id: UUID;
+  id: number;
   content: string;
   fanArtURL: string;
   createdAt: string;
   user: {
-    id: UUID;
+    id: string;
     nickname: string;
     profileURL: string;
   };

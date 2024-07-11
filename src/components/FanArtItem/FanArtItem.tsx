@@ -32,7 +32,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
     const check = confirm('팬아트를 삭제하시겠습니까?');
 
     if (check) {
-      deleteFanArt(fanArt.id);
+      deleteFanArt(fanArt.id.toString());
     }
   };
 

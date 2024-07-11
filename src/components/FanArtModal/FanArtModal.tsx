@@ -86,7 +86,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
       const formData = new FormData();
       formData.append('imageFile', imageFile);
       formData.append('content', content);
-      formData.append('id', fanArt.id);
+      formData.append('id', fanArt.id.toString());
       formData.append('fanArtURL', fanArt.fanArtURL);
 
       updateFanArt(formData);

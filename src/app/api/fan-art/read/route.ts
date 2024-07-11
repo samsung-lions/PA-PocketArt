@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const postId = searchParams.get('postId');
+  const postId = searchParams.get('postId') as string;
 
   const { data, error } = await supabase.from('FanArts').select('*').eq('postId', postId);
 
