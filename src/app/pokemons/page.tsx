@@ -58,7 +58,7 @@ const PokemonListPage = () => {
       </div>
       {searchInfo.search && (
         <div className="text-center text-lg font-semibold mb-4">
-          '{searchInfo.search}'에 대한 검색 결과 ({searchInfo.category})
+          &apos;{searchInfo.search}&apos;에 대한 검색 결과 ({searchInfo.category})
         </div>
       )}
       {loading ? (
