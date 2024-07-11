@@ -1,21 +1,25 @@
+import { useConfirm } from '@/contexts/confirm.context';
 import { useFormModal } from '@/contexts/formModal.context';
 import { useToast } from '@/contexts/toast.context';
 import { FanArtItemProps } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Button from '../Button';
+import ConfirmModal from '../ConfirmModal';
 
 const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
+  const confirmToast = useConfirm();
   const form = useFormModal();
 
   const [preview, setPreview] = useState<string>(fanArt.fanArtURL);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>(fanArt.content);
+  const [isCancel, setIsCancel] = useState<boolean>(false);
 
   const { mutate: updateFanArt } = useMutation({
     mutationFn: (newFanArt: FormData) =>
@@ -26,8 +30,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
       }),
     onSuccess: () => {
       toast.on({ label: '팬아트가 수정되었습니다.' });
-
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+      confirmToast.off();
 
       form.close();
     },
@@ -68,31 +71,22 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     setContent(e.target.value);
   };
 
-  const handleSubmitForm = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
-    e.preventDefault();
-
+  const handleSubmitForm = (): void => {
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
 
-    const check = confirm('수정 완료 하시겠습니까?');
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+    formData.append('content', content);
+    formData.append('id', fanArt.id.toString());
+    formData.append('fanArtURL', fanArt.fanArtURL);
 
-    if (check) {
-      const formData = new FormData();
-      formData.append('imageFile', imageFile);
-      formData.append('content', content);
-      formData.append('id', fanArt.id.toString());
-      formData.append('fanArtURL', fanArt.fanArtURL);
-
-      updateFanArt(formData);
-    }
+    updateFanArt(formData);
   };
 
-  const handleClickCloseButton = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void => {
-    const check = confirm('수정을 취소하시겠습니까?');
-
-    if (check) {
-      form.close();
-      toast.on({ label: '수정이 취소되었습니다.' });
-    }
+  const handleClickCloseButton = (): void => {
+    form.close();
+    toast.on({ label: '수정이 취소되었습니다.' });
+    confirmToast.off();
   };
 
   return (
@@ -110,18 +104,39 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
             onChange={showFanArtPreview}
           />
           <textarea
-            className="w-full flex-grow bg-slate-100 text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
+            className="w-full resize-none flex-grow bg-slate-100 text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
             value={content}
             onChange={handleChangeContentTextArea}
             placeholder="팬아트에 대해 소개해주세요."
           />
           <div className="flex justify-end gap-x-2">
-            <Button intent={'submit'} type="submit" onClick={handleSubmitForm}>
-              수정 완료
-            </Button>
-            <Button intent={'cancel'} type="button" onClick={handleClickCloseButton}>
-              취소
-            </Button>
+            <div>
+              {!isCancel && confirmToast.modalOptions && (
+                <ConfirmModal modalOptions={confirmToast.modalOptions} handleClick={handleSubmitForm} />
+              )}
+              <Button
+                intent={'submit'}
+                type="button"
+                onClick={() => confirmToast.on({ label: '수정 완료 하시겠습니까?' })}
+              >
+                수정 완료
+              </Button>
+            </div>
+            <div>
+              {isCancel && confirmToast.modalOptions && (
+                <ConfirmModal modalOptions={confirmToast.modalOptions} handleClick={handleClickCloseButton} />
+              )}
+              <Button
+                intent={'cancel'}
+                type="button"
+                onClick={() => {
+                  setIsCancel(true);
+                  confirmToast.on({ label: '수정을 취소하시겠습니까?' });
+                }}
+              >
+                취소
+              </Button>
+            </div>
           </div>
         </div>
       </form>

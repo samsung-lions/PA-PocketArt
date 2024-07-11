@@ -11,7 +11,8 @@ const buttonVariant = cva('font-semibold transition hover:brightness-110 active:
     size: {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-[15px]',
-      lg: 'px-5 py-2.5 text-[17px]'
+      lg: 'px-5 py-3 text-[17px]',
+      half: 'w-1/2 text-[15px] py-2'
     }
   },
   defaultVariants: {
