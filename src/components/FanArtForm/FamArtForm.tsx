@@ -87,7 +87,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
               onChange={showFanArtPreview}
             />
             <textarea
-              className="w-full flex-grow bg-white text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
+              className="w-full resize-none flex-grow bg-white text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
               value={content}
               onChange={handleChangeContentTextArea}
               placeholder="팬아트에 대해 소개해주세요."

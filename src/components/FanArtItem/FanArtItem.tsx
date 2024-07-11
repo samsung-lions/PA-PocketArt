@@ -1,5 +1,6 @@
 'use client';
 
+import { useConfirm } from '@/contexts/confirm.context';
 import { useFormModal } from '@/contexts/formModal.context';
 import { useToast } from '@/contexts/toast.context';
 import { FanArtItemProps } from '@/types/FanArt.type';
@@ -7,19 +8,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import Button from '../Button';
+import ConfirmModal from '../ConfirmModal';
 
 const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
+  const confirmToast = useConfirm();
   const form = useFormModal();
 
   const { mutate: deleteFanArt } = useMutation({
     mutationFn: (id: string) => axios.delete(`/api/fan-art/delete?id=${id}`),
     onSuccess: () => {
       toast.on({ label: '팬아트가 삭제되었습니다' });
+      confirmToast.off();
 
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
     },
     onError: (error) => console.error('팬아트 삭제 실패: ', error)
   });
@@ -29,11 +33,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   };
 
   const handleClickDeleteButton = async (): Promise<void> => {
-    const check = confirm('팬아트를 삭제하시겠습니까?');
-
-    if (check) {
-      deleteFanArt(fanArt.id.toString());
-    }
+    deleteFanArt(fanArt.id.toString());
   };
 
   return (
@@ -56,10 +56,17 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
         <div className="w-full flex-grow text-lg bg-slate-100 text-[#212121] rounded px-6 py-4">{fanArt.content}</div>
 
         <div className="flex justify-end gap-x-2">
+          {confirmToast.modalOptions && (
+            <ConfirmModal modalOptions={confirmToast.modalOptions} handleClick={handleClickDeleteButton} />
+          )}
           <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>
             수정
           </Button>
-          <Button intent={'cancel'} type="button" onClick={handleClickDeleteButton}>
+          <Button
+            intent={'cancel'}
+            type="button"
+            onClick={() => confirmToast.on({ label: '팬아트를 삭제하시겠습니까?' })}
+          >
             삭제
           </Button>
         </div>
