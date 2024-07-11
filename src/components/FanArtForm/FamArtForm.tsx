@@ -19,8 +19,8 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
 
   const { mutate: createFanArt } = useMutation({
-    mutationFn: async (newFanArt: FormData) =>
-      await axios.post('/api/fan-art/create', newFanArt, {
+    mutationFn: (newFanArt: FormData) =>
+      axios.post('/api/fan-art/create', newFanArt, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

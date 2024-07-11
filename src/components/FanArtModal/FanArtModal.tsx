@@ -1,17 +1,43 @@
 import { useFormModal } from '@/contexts/formModal.context';
 import { useToast } from '@/contexts/toast.context';
 import { FanArtItemProps } from '@/types/FanArt.type';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import Button from '../Button';
 
 const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
+  const queryClient = useQueryClient();
+
   const toast = useToast();
   const form = useFormModal();
 
   const [preview, setPreview] = useState<string>(fanArt.fanArtURL);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>(fanArt.content);
+
+  const { mutate: updateFanArt } = useMutation({
+    mutationFn: (newFanArt: FormData) =>
+      axios.post('/api/fan-art/update', newFanArt, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }),
+    onSuccess: () => {
+      toast.on({ label: '팬아트가 수정되었습니다.' });
+
+      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+
+      // 폼 초기화
+      // setIsOpenedForm(false);
+      // setImageFile(null);
+      // setPreview('/icons/ic-art.png');
+      // setContent('');
+      form.close();
+    },
+    onError: (error) => console.error('팬아트 수정 실패: ', error)
+  });
 
   useEffect(() => {
     // URL을 Blob으로 변환하고 Blob을 File로 변환하는 함수
@@ -54,12 +80,17 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
 
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
 
-    const formData = new FormData();
-    formData.append('imageFile', imageFile);
-    formData.append('content', content);
-    formData.append('postId', postId);
+    const check = confirm('수정 완료 하시겠습니까?');
 
-    // createFanArt(formData);
+    if (check) {
+      const formData = new FormData();
+      formData.append('imageFile', imageFile);
+      formData.append('content', content);
+      formData.append('id', fanArt.id);
+      formData.append('fanArtURL', fanArt.fanArtURL);
+
+      updateFanArt(formData);
+    }
   };
 
   const handleClickCloseButton = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
@@ -81,7 +112,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
         </div>
         <div className="flex flex-col gap-y-3">
           <input
-            className="border rounded bg-white text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-110 file:active:brightness-125 file:hover:scale-105 file:transition"
+            className="w-[400px] border rounded bg-white text-[#212121] px-3 py-2 file:cursor-pointer file:bg-[#ffD400] file:border-none file:rounded file:font-semibold file:text-sm file:px-3 file:py-1.5 file:mr-3 file:hover:brightness-110 file:active:brightness-125 file:hover:scale-105 file:transition"
             type="file"
             onChange={showFanArtPreview}
           />

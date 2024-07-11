@@ -15,7 +15,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   const form = useFormModal();
 
   const { mutate: deleteFanArt } = useMutation({
-    mutationFn: async (id: string) => await axios.delete(`/api/fan-art/delete?id=${id}`),
+    mutationFn: (id: string) => axios.delete(`/api/fan-art/delete?id=${id}`),
     onSuccess: () => {
       toast.on({ label: '팬아트가 삭제되었습니다' });
 

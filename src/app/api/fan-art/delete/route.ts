@@ -8,8 +8,6 @@ export async function DELETE(request: NextRequest) {
   const { data, error: selectError } = await supabase.from('FanArts').select().eq('id', id);
   const imageURL: string = data?.[0].fanArtURL.split('/').slice(-1)[0] || '';
 
-  console.log('이미지: ' + imageURL);
-
   if (selectError) {
     throw new Error(selectError.message);
   }
