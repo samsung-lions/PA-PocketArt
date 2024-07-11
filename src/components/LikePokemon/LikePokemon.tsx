@@ -11,6 +11,7 @@ import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Spinner from '../Spinner';
 
 // 현재 페이지의 포켓몬 상세 데이터를 가져오는 함수
 const fetchPokemon = async (id: string): Promise<Pokemon> => {
@@ -31,7 +32,7 @@ const fetchLikedPokemons = async () => {
 
 export const LikePokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -46,13 +47,7 @@ export const LikePokemon = () => {
       });
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-yellow-400"></div>
-        <p className="text-xl font-semibold mt-4 text-gray-700">불러오는 중입니다...</p>
-      </div>
-    );
+  if (isLoading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
   return (

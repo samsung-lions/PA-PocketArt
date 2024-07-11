@@ -12,15 +12,16 @@ const MyContent: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-
+  console.log(comments);
   useEffect(() => {
     const fetchComments = async () => {
       const { data, error } = await supabase.from('FanArts').select('*');
+
       if (error) {
         console.error('Error fetching comments:', error);
         router.push('/404');
       } else {
-        setComments(data || []);
+        setComments(data);
       }
     };
 
@@ -38,7 +39,7 @@ const MyContent: React.FC = () => {
           >
             <Link href={`/pokemons/${comment.postId}`}>
               <div className="h-48 relative">
-                <Image src={comment.fanArtURL} alt="" fill className="object-contain" />
+                <Image src={comment.fanArtURL} alt="Pocket Art" fill className="object-contain" />
               </div>
               <div className="p-4">
                 <p className="text-black text-lg font-semibold mb-2">Fan Art #{comment.postId}</p>
