@@ -9,7 +9,10 @@ export type FanArt = {
     profileURL: string;
   };
 };
-
+export type FanArts = {
+  FanArts: FanArt[];
+  count: number;
+};
 export interface FanArtSectionProps {
   postId: string;
 }

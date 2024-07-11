@@ -28,7 +28,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     onSuccess: () => {
       toast.on({ label: '팬아트가 등록되었습니다!' });
 
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
 
       setIsOpenedForm(false);
       setImageFile(null);
