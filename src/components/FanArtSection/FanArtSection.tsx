@@ -12,7 +12,7 @@ import Pagination from '../Pagination';
 export const itemCountPerPage: number = 5;
 export const pageCountPerPage: number = 5;
 
-const fetchNextPage = async (postId: string, page: number): Promise<any> => {
+const fetchNextPage = async (postId: string, page: number) => {
   const response = await GET(new Request(`/api/fan-art/read?postId=${postId}`) as unknown as NextRequest, page + 1);
   return response.json();
 };
@@ -45,7 +45,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
   return (
     <section ref={sectionRef} className="w-full mt-1">
       <FanArtForm postId={postId} />
-      <div className="h-[2300px]">
+      <div className="h-[2000px]">
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (
             fanArts.fanArts.reverse().map((fanArt: FanArt) => (
