@@ -1,5 +1,6 @@
 'use client';
 
+import { useToast } from '@/contexts/toast.context';
 import { FanArtSectionProps } from '@/types/FanArt.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -9,7 +10,7 @@ import Button from '../Button';
 
 const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
-
+  const toast = useToast();
   const [preview, setPreview] = useState<string>('/icons/ic-art.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
@@ -22,12 +23,9 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
           'Content-Type': 'multipart/form-data'
         }
       }),
-    onSuccess: () => {
-      alert('팬아트가 등록되었습니다!');
-
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
-
-      // 폼 초기화
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
+      toast.on({ label: '팬아트가 등록되었습니다!' });
       setIsOpenedForm(false);
       setImageFile(null);
       setPreview('/icons/ic-art.png');

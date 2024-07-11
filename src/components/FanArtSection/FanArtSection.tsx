@@ -42,15 +42,16 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
     }
   };
   if (isLoading) return <div className="text-xl font-semibold text-center py-4">Loading...</div>;
+
   return (
     <section ref={sectionRef} className="w-full mt-1">
       <FanArtForm postId={postId} />
-      <div className="h-[2000px]">
+      <div>
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (
-            fanArts.fanArts.reverse().map((fanArt: FanArt) => (
+            fanArts.fanArts.map((fanArt: FanArt) => (
               <li key={fanArt.id} className="rounded p-4">
-                <FanArtItem fanArt={fanArt} />
+                <FanArtItem postId={postId} fanArt={fanArt} />
               </li>
             ))
           ) : (

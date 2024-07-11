@@ -5,24 +5,29 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, page: number) {
   const { searchParams } = new URL(request.url);
-  const postId = searchParams.get('postId');
+  const postId = searchParams.get('postId') as string;
 
   if (!postId) {
     return NextResponse.json({ error: 'postId is required' }, { status: 400 });
   }
   const start = (page - 1) * itemCountPerPage;
-  const end = itemCountPerPage * page;
+  const end = itemCountPerPage * page - 1;
 
   const { count } = await supabase.from('FanArts').select('id', { count: 'exact', head: true }).eq('postId', postId);
-  const { data, error } = await supabase.from('FanArts').select('*').eq('postId', postId).range(start, end);
+  const { data, error } = await supabase
+    .from('FanArts')
+    .select('*')
+    .eq('postId', postId)
+    .order('id', { ascending: false })
+    .range(start, end);
   if (error) {
     throw new Error(error.message);
   }
 
-  const fanArts: FanArt[] = data.reverse().map((fanArt) => ({
+  const fanArts: FanArt[] = data.map((fanArt) => ({
     id: fanArt.id,
     content: fanArt.content,
-    fanArtURL: fanArt.fanArtURL,
+    fanArtURL: 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + fanArt.fanArtURL,
     createdAt: fanArt.createdAt.slice(0, 10),
     user: {
       id: fanArt.writerId,

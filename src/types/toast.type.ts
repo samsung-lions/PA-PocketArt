@@ -3,7 +3,7 @@ export type ToastProps = {
   off: (id: string) => void;
 };
 export type ToastType = {
-  id: string;
+  id?: string;
   label: string;
 };
 
