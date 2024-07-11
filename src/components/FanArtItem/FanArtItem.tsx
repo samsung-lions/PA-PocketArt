@@ -23,7 +23,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
       toast.on({ label: '팬아트가 삭제되었습니다' });
       confirmToast.off();
 
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
     },
     onError: (error) => console.error('팬아트 삭제 실패: ', error)
   });

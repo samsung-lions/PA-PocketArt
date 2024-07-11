@@ -32,8 +32,6 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
       toast.on({ label: '팬아트가 수정되었습니다.' });
       confirmToast.off();
 
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
-
       form.close();
     },
     onError: (error) => console.error('팬아트 수정 실패: ', error)

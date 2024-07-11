@@ -41,6 +41,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
       sectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
   if (isLoading) return <div className="text-xl font-semibold text-center py-4">Loading...</div>;
 
   return (
