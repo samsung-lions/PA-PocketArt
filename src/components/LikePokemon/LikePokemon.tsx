@@ -7,25 +7,22 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 import Link from 'next/link';
-// Swiper 스타일 임포트
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Spinner from '../Spinner';
 
-// 현재 페이지의 포켓몬 상세 데이터를 가져오는 함수
 const fetchPokemon = async (id: string): Promise<Pokemon> => {
   const response = await axios.get(`http://localhost:3000/api/pokemons/${id}`);
   return response.data;
 };
 
-// 데이터를 가져오는 함수
 const fetchLikedPokemons = async () => {
   const { data, error } = await supabase.from('Likes').select('*');
   if (error) {
     throw error;
   }
-  // 데이터를 보여주는 변수
+
   const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
   return await Promise.all(pokemonData);
 };

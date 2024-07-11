@@ -1,6 +1,6 @@
 'use client';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/supabase'; // Supabase 데이터베이스 타입을 정의해야 합니다
+import { Database } from '@/types/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ const MyContent: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  console.log(comments);
+
   useEffect(() => {
     const fetchComments = async () => {
       const { data, error } = await supabase.from('FanArts').select('*');
