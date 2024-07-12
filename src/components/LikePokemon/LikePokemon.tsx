@@ -17,22 +17,25 @@ const fetchPokemon = async (id: string): Promise<Pokemon> => {
   return response.data;
 };
 
-const fetchLikedPokemons = async () => {
-  const { data, error } = await supabase.from('Likes').select('*');
-  if (error) {
-    throw error;
-  }
-
-  const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
-  return await Promise.all(pokemonData);
-};
-
 export const LikePokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchLikedPokemons = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      const { data, error } = await supabase.from('Likes').select('*').eq('userId', user.id);
+      if (error) {
+        throw error;
+      }
+
+      const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
+      return await Promise.all(pokemonData);
+    };
     fetchLikedPokemons()
       .then((data) => {
         setPokemonList(data);
@@ -48,33 +51,41 @@ export const LikePokemon = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className=" p-6 rounded-lg shadow-xl ">
+    <div className="p-6 rounded-lg shadow-xl h-[280px] relative">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
-        slidesPerView={6}
-        navigation
-        pagination={{ clickable: true }}
-        className="mySwiper"
+        slidesPerView={3}
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }}
+        pagination={{
+          clickable: true,
+          bulletActiveClass: 'swiper-pagination-bullet-active'
+        }}
+        className="mySwiper h-[250px]"
       >
         {pokemonList.map((item) => (
-          <SwiperSlide key={item.id}>
-            <Link href={`/pokemons/${item.id}`}>
-              <div className="  p-4 rounded-lg shadow-md transition-transform hover:scale-105">
-                <h3 className=" text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
-                <div className="flex justify-center">
+          <SwiperSlide key={item.id} className="flex items-center justify-center">
+            <Link href={`/pokemons/${item.id}`} className="w-full h-full">
+              <div className="p-4 rounded-lg shadow-md transition-transform hover:scale-105 h-full flex flex-col justify-between">
+                <h3 className="text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
+                <div className="flex-grow flex items-center justify-center">
                   <Image
                     src={item.sprites.front_default}
                     alt={item.name}
-                    width={100}
-                    height={100}
-                    className="rounded-full  p-2"
+                    width={120}
+                    height={120}
+                    className="rounded-full p-2"
                   />
                 </div>
               </div>
             </Link>
           </SwiperSlide>
         ))}
+        <div className=" swiper-button-next after:text-[#FFD400] after:text-2xl"></div>
+        <div className=" swiper-button-prev after:text-[#FFD400] after:text-2xl"></div>
       </Swiper>
     </div>
   );
