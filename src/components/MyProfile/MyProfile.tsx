@@ -16,12 +16,12 @@ const ProfileForm = () => {
       data: { user }
     } = await supabase.auth.getUser();
     if (user) {
-      const { data, error } = await supabase.from('avatars').select('avatar_url').eq('id', user.id).single();
+      const { data, error } = await supabase.from('Users').select('profile_img').eq('id', user.id).single();
 
       if (error) {
         console.error('Error fetching profile:', error);
       } else if (data) {
-        setUrl(data.avatar_url);
+        setUrl(data.profile_img);
       }
     }
   }
@@ -51,11 +51,12 @@ const ProfileForm = () => {
       data: { user }
     } = await supabase.auth.getUser();
     if (user) {
-      const { error } = await supabase.storage.from('avatars').update({ id: user.id, avatar_url: url });
+      const { data, error } = await supabase.from('Users').upload(`avatar_${Date.now()}.png`, file);
 
       if (error) {
         console.error('error:', error);
       } else {
+        setUrl(`https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/users/${data.path}`);
         alert('저장완료');
       }
     }
