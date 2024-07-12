@@ -1,21 +1,21 @@
 'use client';
+import { useToast } from '@/contexts/toast.context';
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-
+interface ErrorType {
+  password: string;
+  passwordConfirm: string;
+  nickname: string;
+}
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
+  const toast = useToast();
 
-  // const { logInUser, logOutUser, user } = useUserStore((state) => state);
-  // console.log(user);
-  const [error, setError] = useState<{
-    password: string;
-    passwordConfirm: string;
-    nickname: string;
-  }>({
+  const [error, setError] = useState<ErrorType>({
     password: '',
     passwordConfirm: '',
     nickname: ''
@@ -71,16 +71,16 @@ const SignUpPage = () => {
     }
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     if (email === '' || password === '' || nickname === '') {
-      alert('빈칸을 채워주세요!');
+      toast.on({ label: '빈칸을 채워주세요!' });
       return;
     }
 
     if (password !== passwordConfirm) {
-      alert('비밀번호가 틀립니다!');
+      toast.on({ label: '비밀번호가 틀립니다!' });
       return;
     }
 
@@ -89,13 +89,16 @@ const SignUpPage = () => {
       password
     });
 
-    const { data: user } = await supabase.from('Users').insert({ id: data.user?.id, email, nickname });
-    console.log(data);
-    //insert
+    const { error: signUpError } = await supabase.from('Users').insert({ id: data.user?.id, email, nickname });
     if (error) {
-      alert(error.message);
+      toast.on({ label: error.message });
+      return;
     }
-    alert('회원가입이 완료되었습니다!');
+    if (signUpError) {
+      toast.on({ label: signUpError.message });
+      return;
+    }
+    toast.on({ label: '회원가입이 완료되었습니다!' });
 
     router.replace('/');
   };
