@@ -20,6 +20,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>(fanArt.content);
   const [isCancel, setIsCancel] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { mutate: updateFanArt } = useMutation({
     mutationFn: (newFanArt: FormData) =>
@@ -31,12 +32,16 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     onSuccess: () => {
       toast.on({ label: '팬아트가 수정되었습니다.' });
       confirmToast.off();
+      setIsLoading(false);
 
       queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
 
       form.close();
     },
-    onError: (error) => console.error('팬아트 수정 실패: ', error)
+    onError: (error) => {
+      console.error('팬아트 수정 실패: ', error);
+      setIsLoading(false); // 로딩 상태 해제
+    }
   });
 
   useEffect(() => {
@@ -75,6 +80,8 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
 
   const handleSubmitForm = (): void => {
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
+
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append('imageFile', imageFile);
@@ -117,19 +124,28 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
           <div className="flex justify-end gap-x-2">
             <div>
               {!isCancel && confirmToast.modalOptions && (
-                <ConfirmModal modalOptions={confirmToast.modalOptions} handleClick={handleSubmitForm} />
+                <ConfirmModal
+                  modalOptions={confirmToast.modalOptions}
+                  handleClick={handleSubmitForm}
+                  isLoading={isLoading}
+                />
               )}
               <Button
                 intent={'submit'}
                 type="button"
                 onClick={() => confirmToast.on({ label: '수정 완료 하시겠습니까?' })}
+                isDisabled={isLoading}
               >
                 수정 완료
               </Button>
             </div>
             <div>
               {isCancel && confirmToast.modalOptions && (
-                <ConfirmModal modalOptions={confirmToast.modalOptions} handleClick={handleClickCloseButton} />
+                <ConfirmModal
+                  modalOptions={confirmToast.modalOptions}
+                  handleClick={handleClickCloseButton}
+                  isLoading={false}
+                />
               )}
               <Button
                 intent={'cancel'}

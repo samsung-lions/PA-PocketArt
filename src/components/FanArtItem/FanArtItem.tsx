@@ -17,16 +17,21 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   const form = useFormModal();
 
   const [isClickDeleteButton, setIsClickDeleteButton] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { mutate: deleteFanArt } = useMutation({
     mutationFn: (id: string) => axios.delete(`/api/fan-art/delete?id=${id}`),
     onSuccess: () => {
       toast.on({ label: '팬아트가 삭제되었습니다' });
       setIsClickDeleteButton(false);
+      setIsLoading(false);
 
       queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
     },
-    onError: (error) => console.error('팬아트 삭제 실패: ', error)
+    onError: (error) => {
+      console.error('팬아트 삭제 실패: ', error);
+      setIsLoading(false);
+    }
   });
 
   const handleClickUpdateButton = (): void => {
@@ -34,6 +39,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   };
 
   const handleClickDeleteButton = async (): Promise<void> => {
+    setIsLoading(true);
     deleteFanArt(fanArt.id.toString());
   };
   const confirmDelete = (): void => {
@@ -71,6 +77,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
               }}
               handleClick={handleClickDeleteButton}
               handleClickCancel={cancelDelete}
+              isLoading={isLoading}
             />
           )}
           <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>
