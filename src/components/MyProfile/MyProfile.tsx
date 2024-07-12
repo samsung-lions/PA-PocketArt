@@ -159,7 +159,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
             onClick={() => setIsEditingNickname(true)}
             className="w-full bg-black text-white  py-2 px-4 rounded-lg hover:bg-[#ffD400] transition-colors"
           >
-            닉네임변경
+            닉네임변경 ⚙
           </button>
         </>
       )}
