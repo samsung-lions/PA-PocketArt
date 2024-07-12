@@ -4,15 +4,15 @@ import { throttle } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchCategory, setSearchCategory] = useState('name');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+const SearchBar: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchCategory, setSearchCategory] = useState<string>('name');
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleSearch = useCallback(
-    throttle((e: React.FormEvent) => {
+    throttle((e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       router.push(`/pokemons?search=${searchTerm}&category=${searchCategory}`);
     }, 300),
@@ -41,7 +41,7 @@ const SearchBar = () => {
     };
   }, [dropdownRef]);
 
-  const getPlaceholderText = () => {
+  const getPlaceholderText = (): string => {
     return searchCategory === 'name' ? '포켓몬 이름' : '포켓몬 도감번호';
   };
 
