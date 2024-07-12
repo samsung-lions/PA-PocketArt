@@ -1,4 +1,5 @@
 'use client';
+
 import { PAGE_SIZE } from '@/app/api/pokemons/route';
 import { Pokemon } from '@/types/Pokemon.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -12,8 +13,10 @@ const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
   const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
   return { data, nextPage: pageParam + 1 };
 };
+
 const PokemonList = () => {
   const [loading, setLoading] = useState<boolean>(false);
+
   const {
     data: pokemons,
     fetchNextPage,
@@ -29,16 +32,19 @@ const PokemonList = () => {
     },
     initialPageParam: 1
   });
+
   const { ref, inView } = useInView({
     triggerOnce: false,
     rootMargin: '200px'
   });
+
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchNextPage();
   }
   const handleCardClick = (): void => {
     setLoading(true);
   };
+
   if (isLoading) {
     return <div className="text-xl font-semibold text-center py-10">몬스터 볼 던지는 중...🍃</div>;
   }
@@ -64,4 +70,5 @@ const PokemonList = () => {
     </>
   );
 };
+
 export default PokemonList;
