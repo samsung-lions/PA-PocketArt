@@ -10,18 +10,18 @@
 <table>
   <tbody>
     <tr>
-      <th align="center"><b>팀장: 박유영</b></th>
+      <th align="center"><b>팀원: 박유영</b></th>
       <th align="center"><b>팀원: 양대우</b></th>
       <th align="center"><b>팀원: 이수진</b></th>
       <th align="center"><b>팀원: 이세영</b></th>
-      <th align="center"><b>팀원: 주현우</b></th>
+      <th align="center"><b>팀장: 주현우</b></th>
     </tr>
     <tr>
       <td align="center"><img src="https://avatars.githubusercontent.com/u/82076033?v=4" width="100px;" alt="박유영"/></td>
       <td align="center"><img src="https://avatars.githubusercontent.com/u/161686758?v=4" width="100px;" alt="양대우"/></td>
       <td align="center"><img src="https://avatars.githubusercontent.com/u/59927808?v=4" width="100px;" alt="이수진"/></td>
-      <td align="center"><img src="(https://avatars.githubusercontent.com/u/141402621?v=4" width="100px;" alt="이세영"/></td>
-      <td align="center"><img src="https://avatars.githubusercontent.com/u/167187204?v=4" width="100px;" alt="주현우"/></td>
+      <td align="center"><img src="https://avatars.githubusercontent.com/u/141402621?v=4" width="100px;" alt="이세영"/></td>
+      <td align="center"><img src="https://avatars.githubusercontent.com/u/37990421?v=4" width="100px;" alt="주현우"/></td>
      <tr/>
       <td align="center"><a href="https://github.com/Park-Yuyeong">@Park-Yuyeong</a></td>
       <td align="center"><a href="https://github.com/DAEWOOYANG0310">@DAEWOOYANG0310</a></td>
