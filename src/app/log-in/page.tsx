@@ -1,13 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useRef } from 'react';
 
 import Link from 'next/link';
 
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user';
 
 const LogInPage = () => {
   // const { logInUser } = useUserStore((state) => state);
@@ -88,10 +86,7 @@ const LogInPage = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="min-h-screen flex flex-col items-center  bg-gray-100">
-        <div className="bg-black p-5 w-full flex ">
-          <Image src="/logo.png" alt="로고" width={70} height={50} />
-        </div>
+      <div className="min-h-screen flex flex-col items-center bg-gray-100">
         <div className="flex justify-center mt-12">
           <div className="text-center w-60 rounded-full text-3xl font-bold p-4 bg-white shadow-md">로그인</div>
         </div>
@@ -121,7 +116,7 @@ const LogInPage = () => {
 
             <div className="text-center mb-4">
               <div>
-                <button type="submit" className="px-4 py-2 w-full bg-yellow-500 text-white rounded">
+                <button type="submit" className="px-4 py-2 w-full bg-yellow text-white rounded">
                   로그인
                 </button>
               </div>
@@ -134,11 +129,11 @@ const LogInPage = () => {
 
             <div className="text-center mb-4">
               <div className="text-gray-500 mb-2">또는 소셜 계정으로 로그인</div>
-              <button onClick={googleLogin} className="px-4 py-2 w-full bg-red-500 text-white rounded mb-2">
+              <button onClick={googleLogin} className="px-4 py-2 w-full bg-red text-white rounded mb-2">
                 구글 로그인
               </button>
 
-              <button onClick={kakaoLogin} className="px-4 py-2 w-full bg-yellow-300 text-white rounded">
+              <button onClick={kakaoLogin} className="px-4 py-2 w-full bg-yellow text-white rounded">
                 카카오 로그인
               </button>
             </div>
