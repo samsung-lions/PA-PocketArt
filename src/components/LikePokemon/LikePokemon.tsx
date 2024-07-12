@@ -67,7 +67,7 @@ export const LikePokemon = () => {
   }
 
   return (
-    <div className="p-4 rounded-3xl shadow-lg w-[600px] h-[320px]">
+    <div className="p-4 rounded-3xl shadow-lg w-[630px] h-[320px]">
       <h2 className="text-[#ffD400] text-2xl font-bold mt-4 mb-6 text-center">My Pick</h2>
       <Swiper
         modules={[Pagination, Navigation]}

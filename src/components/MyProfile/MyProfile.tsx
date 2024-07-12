@@ -1,5 +1,6 @@
 'use client';
 import { useToast } from '@/contexts/toast.context';
+import { useUserStore } from '@/stores/user';
 import supabase from '@/supabase/supabase';
 import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
@@ -10,6 +11,7 @@ interface ProfileFormProps {}
 const defaultImg = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/avatars/default_profile.jpg';
 
 const ProfileForm: React.FC<ProfileFormProps> = () => {
+  const { setUserInfo } = useUserStore((state) => state);
   const [nickname, setNickname] = useState<string>('');
   const [url, setUrl] = useState<string>('');
   const [user, setUser] = useState<User | null>(null);
@@ -64,6 +66,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     if (data) {
       const newUrl = `https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/avatars/${data.path}`;
       setUrl(newUrl);
+      setUserInfo({ profile_img: newUrl, nickname: nickname });
       await handleImageSave(newUrl);
     }
   };
@@ -102,6 +105,8 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
       toast.on({ label: '닉네임이 변경되었습니다!' });
       setNickname(newNickname.trim());
       setIsEditingNickname(false);
+      setNewNickname('');
+      setUserInfo({ profile_img: url, nickname: newNickname });
     }
   };
 
