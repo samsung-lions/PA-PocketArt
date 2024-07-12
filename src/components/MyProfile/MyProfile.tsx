@@ -6,6 +6,7 @@ import { User } from '@supabase/supabase-js';
 import { useToast } from '@/contexts/toast.context';
 
 interface ProfileFormProps {}
+const defaultImg = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/avatars/default_profile.jpg';
 
 const ProfileForm: React.FC<ProfileFormProps> = () => {
   const [nickname, setNickname] = useState<string>('');
@@ -13,7 +14,6 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isEditingNickname, setIsEditingNickname] = useState<boolean>(false);
   const [newNickname, setNewNickname] = useState<string>('');
-  const defaultImg = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/avatars/default_profile.jpg';
   const toast = useToast();
 
   useEffect(() => {
