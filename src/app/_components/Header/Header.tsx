@@ -5,20 +5,29 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/stores/user';
 import { User } from '@supabase/supabase-js';
+import supabase from '@/supabase/supabase';
+import { useToast } from '@/contexts/toast.context';
 
 function Header() {
   const router = useRouter();
   const { user, logOutUser } = useUserStore((state) => state);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  const [nickName, setNickName] = useState<string>();
+  const toast = useToast();
 
   useEffect(() => {
+    async function getNickname() {
+      if (!user) return;
+      const { data, error } = await supabase.from('Users').select('nickname').eq('id', user.id).single();
+      setNickName(data?.nickname);
+    }
     setLoggedInUser(user);
+    getNickname();
   }, [user]);
 
   const handleLogInClick = () => {
     router.push('/log-in');
   };
-
   const handleSignUpClick = () => {
     router.push('/sign-up');
   };
@@ -26,9 +35,10 @@ function Header() {
     router.push(`/mypage/${user?.id}`);
   };
 
-  const handleLogOutClick = () => {
+  const handleLogOutClick = async () => {
     logOutUser();
-    alert('로그아웃 되었습니다');
+    const { error } = await supabase.auth.signOut();
+    toast.on({ label: '로그아웃 되었습니다' });
     router.push('/');
   };
 
@@ -40,7 +50,7 @@ function Header() {
       <div className="ml-auto flex items-center space-x-4">
         {loggedInUser ? (
           <>
-            <span className="text-white">{loggedInUser.email}</span>
+            <span className="text-white">{nickName}</span>
             <button type="button" onClick={handleMypageClick} className="bg-yellow px-4 py-2 rounded">
               마이페이지
             </button>
