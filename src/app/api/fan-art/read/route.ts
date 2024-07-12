@@ -20,21 +20,32 @@ export async function GET(request: NextRequest, page: number) {
     .eq('postId', postId)
     .order('id', { ascending: false })
     .range(start, end);
+
   if (error) {
     throw new Error(error.message);
   }
 
-  const fanArts: FanArt[] = data.map((fanArt) => ({
-    id: fanArt.id,
-    content: fanArt.content,
-    fanArtURL: 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + fanArt.fanArtURL,
-    createdAt: fanArt.createdAt.slice(0, 10),
-    user: {
-      id: fanArt.writerId,
-      nickname: '작성자 닉네임',
-      profileURL: '/icons/ic-main.png'
-    }
-  }));
+  const fanArts: FanArt[] = await Promise.all(
+    data.map(async (fanArt): Promise<FanArt> => {
+      const { data: user, error: userError } = await supabase.from('Users').select('*').eq('id', fanArt.writerId);
+
+      if (userError) {
+        throw new Error(userError.message);
+      }
+
+      return {
+        id: fanArt.id,
+        content: fanArt.content,
+        fanArtURL: 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + fanArt.fanArtURL,
+        createdAt: fanArt.createdAt.slice(0, 10),
+        user: {
+          id: user[0].id || '',
+          nickname: user[0].nickname || 'writer',
+          profileURL: user[0].profile_img
+        }
+      };
+    })
+  );
 
   return NextResponse.json({ fanArts, count });
 }
