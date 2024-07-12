@@ -11,27 +11,25 @@ import DefaultImage from '../../../../public/default-profile.jpg';
 
 function Header() {
   const router = useRouter();
-  const { user, logOutUser } = useUserStore((state) => state);
+  const { user, logOutUser, setUserInfo, userInfo } = useUserStore((state) => state);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-  const [nickName, setNickName] = useState<string>();
-  const [userImage, setuserImage] = useState<{
-    nickname: string;
-    profile_img: string | null;
-  } | null>();
+
   const toast = useToast();
 
   useEffect(() => {
     async function getNickname() {
       if (!user) return;
       const { data, error } = await supabase.from('Users').select('nickname,profile_img').eq('id', user.id).single();
-      setuserImage(data?.profile_img);
-      setNickName(data?.nickname);
+      if (error) {
+        console.error('Error fetching user data:', error);
+        return;
+      }
+      setUserInfo({ profile_img: data?.profile_img || null, nickname: data?.nickname || null });
     }
     setLoggedInUser(user);
     getNickname();
-  }, [user]);
-  console.log(nickName);
-  console.log(userImage);
+  }, [user, setUserInfo]);
+
   const handleLogInClick = () => {
     router.push('/log-in');
   };
@@ -43,8 +41,8 @@ function Header() {
   };
 
   const handleLogOutClick = async () => {
+    await supabase.auth.signOut();
     logOutUser();
-    const { error } = await supabase.auth.signOut();
     toast.on({ label: '로그아웃 되었습니다' });
     router.push('/');
   };
@@ -57,13 +55,16 @@ function Header() {
       <div className="ml-auto flex items-center space-x-4">
         {loggedInUser ? (
           <>
-            <div className="flex flex-col justify-center items-center text-center ">
-              <Image src={userImage ?? DefaultImage} width={50} height={30} className="rounded-full" />
-              <span className="text-white ">{nickName}</span>
-            </div>
-            <button type="button" onClick={handleMypageClick} className="bg-yellow px-4 py-2 rounded">
-              마이페이지
-            </button>
+            <Image
+              onClick={handleMypageClick}
+              src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
+              alt="프로필 이미지"
+              width={50}
+              height={30}
+              className="rounded-full hover:cursor-pointer"
+            />
+            <span className="text-white ">{userInfo.nickname}</span>
+
             <button type="button" onClick={handleLogOutClick} className="bg-yellow px-4 py-2 rounded">
               로그아웃
             </button>
