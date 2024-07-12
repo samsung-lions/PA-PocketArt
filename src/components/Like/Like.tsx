@@ -7,6 +7,7 @@ const DEFAULT_HEART = '🤍';
 const PUSHED_HEART = '❤️';
 function PocketLayout() {
   const { id } = useParams<{ id: string }>();
+
   const userId = '98732590-e014-4666-bb87-09a9a4562fe8';
   const queryClient = useQueryClient();
 
