@@ -16,6 +16,7 @@ const page = () => {
           <LikePokemon />
         </div>
       </div>
+      <h2 className="text-[#ffD400] text-4xl font-bold mb-8 text-center">Fan Arts</h2>
       <MyContent />
     </div>
   );

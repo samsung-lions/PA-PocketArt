@@ -1,40 +1,67 @@
 'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/supabase';
+
+import supabase from '@/supabase/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
-
 import { useEffect, useState } from 'react';
+import { Database } from '@/types/supabase';
+import Spinner from '../Spinner';
 
 type Comment = Database['public']['Tables']['FanArts']['Row'];
 
 const MyContent: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
-
-  const supabase = createClientComponentClient<Database>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      console.log('user:', user);
+      try {
+        const {
+          data: { user },
+          error: authError
+        } = await supabase.auth.getUser();
 
-      const { data, error } = await supabase.from('FanArts').select('*');
+        if (authError) {
+          console.error('Error fetching user:', authError);
+          setError('Error fetching user');
+          setLoading(false);
+          return;
+        }
 
-      if (error) {
-        throw error;
-      } else {
-        setComments(data);
+        if (!user) {
+          console.log('User is not logged in');
+          setError('User is not logged in');
+          setLoading(false);
+          return;
+        }
+
+        console.log('user:', user);
+
+        const { data, error: dataError } = await supabase.from('FanArts').select('*').eq('writerId', user.id);
+
+        if (dataError) {
+          console.error('Error fetching comments:', dataError);
+          setError('Error fetching comments');
+        } else {
+          setComments(data);
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+        setError('Unexpected error');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchComments();
   }, []);
 
+  if (loading) return <Spinner />;
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="min-h-screen p-8">
-      <h2 className="text-[#ffD400] text-4xl font-bold mb-8 text-center">Fan Arts</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {comments.map((comment) => (
           <div

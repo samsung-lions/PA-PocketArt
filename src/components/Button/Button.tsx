@@ -32,7 +32,7 @@ type ButtonProps = {} & ButtonVariantProps & ComponentProps<'button'>;
 
 const Button = ({ intent, size, isDisabled, children, ...props }: ButtonProps) => {
   return (
-    <button className={buttonVariant({ intent, size, isDisabled })} {...props}>
+    <button className={buttonVariant({ intent, size, isDisabled })} disabled={isDisabled || false} {...props}>
       {children}
     </button>
   );

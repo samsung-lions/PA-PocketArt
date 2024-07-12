@@ -34,7 +34,15 @@ export type Database = {
           postId?: string
           writerId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "FanArts_writerId_fkey"
+            columns: ["writerId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Likes: {
         Row: {

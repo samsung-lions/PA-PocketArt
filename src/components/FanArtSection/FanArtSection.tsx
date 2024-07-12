@@ -1,7 +1,9 @@
 'use client';
 
 import { GET } from '@/app/api/fan-art/read/route';
+import supabase from '@/supabase/supabase';
 import { FanArt, FanArtSectionProps } from '@/types/FanArt.type';
+import { User } from '@supabase/supabase-js';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import { NextRequest } from 'next/server';
 import { useEffect, useRef, useState } from 'react';
@@ -19,7 +21,10 @@ const fetchNextPage = async (postId: string, page: number) => {
 
 const FanArtSection = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
+
   const [page, setPage] = useState<number>(0);
+  const [user, setUser] = useState<User | null>(null);
+
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   const { data: fanArts = [], isLoading } = useQuery({
@@ -27,6 +32,18 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
     queryFn: () => fetchNextPage(postId, page),
     placeholderData: keepPreviousData
   });
+
+  useEffect(() => {
+    const fetchUser = async (): Promise<void> => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      setUser(user || null);
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     queryClient.prefetchQuery({
@@ -46,13 +63,13 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
 
   return (
     <section ref={sectionRef} className="w-full mt-1">
-      <FanArtForm postId={postId} />
+      <FanArtForm postId={postId} user={user} />
       <div>
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (
             fanArts.fanArts.map((fanArt: FanArt) => (
               <li key={fanArt.id} className="rounded p-4">
-                <FanArtItem postId={postId} fanArt={fanArt} />
+                <FanArtItem fanArt={fanArt} user={user} />
               </li>
             ))
           ) : (
