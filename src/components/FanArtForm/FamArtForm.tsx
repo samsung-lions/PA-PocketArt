@@ -17,6 +17,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState<string>('');
   const [isOpenedForm, setIsOpenedForm] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { mutate: createFanArt } = useMutation({
     mutationFn: (newFanArt: FormData) =>
@@ -34,8 +35,12 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
       setImageFile(null);
       setPreview('/icons/ic-art.png');
       setContent('');
+      setIsLoading(false);
     },
-    onError: (error) => console.error('팬아트 등록 실패: ', error)
+    onError: (error) => {
+      console.error('팬아트 등록 실패: ', error);
+      setIsLoading(false);
+    }
   });
 
   const changeIsOpenedForm = (): void => {
@@ -62,6 +67,8 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     e.preventDefault();
 
     if (!imageFile || !content) return toast.on({ label: '팬아트와 소개글을 모두 작성해주세요.' });
+
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append('imageFile', imageFile);
@@ -93,8 +100,14 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
               placeholder="팬아트에 대해 소개해주세요."
             />
             <div className="flex justify-end gap-x-2">
-              <Button intent={'submit'} type="submit" onClick={handleSubmitForm}>
-                작성 완료
+              <Button
+                intent={'submit'}
+                type="submit"
+                isDisabled={isLoading}
+                onClick={handleSubmitForm}
+                disabled={isLoading}
+              >
+                {isLoading ? '등록 중...' : '작성 완료'}
               </Button>
               <Button intent={'cancel'} type="button" onClick={changeIsOpenedForm}>
                 취소
