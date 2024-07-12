@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user';
 
 const LogInPage = () => {
   //login
