@@ -7,10 +7,13 @@ import Link from 'next/link';
 
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user';
 
 const LogInPage = () => {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  // const { logInUser } = useUserStore((state) => state);
+
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const router = useRouter();
 
@@ -35,9 +38,52 @@ const LogInPage = () => {
       alert(error.message);
       return;
     }
-
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    // console.log(user);
+    if (!user) return;
+    //쥬스탠드 전역상태 저장
+    // logInUser(user);
     alert('로그인 성공!');
     router.replace('/');
+  };
+
+  const googleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { queryParams: { access_type: 'offline', prompt: 'consent' } }
+    });
+
+    console.log(data);
+    if (data) {
+      // const { data: user } = await supabase.from('Users').insert({ email, nickname, provider });
+
+      alert('구글로 로그인 되었습니다');
+      return;
+    }
+
+    if (error) {
+      console.log(error.message);
+      return;
+    }
+  };
+  //유저테이블 넣는 방식으로
+
+  const kakaoLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { queryParams: { access_type: 'offline', prompt: 'consent' } }
+    });
+
+    if (data) {
+      alert('카카오 로그인 되었습니다');
+      return;
+    }
+    if (error) {
+      console.log(error.message);
+      return;
+    }
   };
 
   return (
@@ -88,9 +134,13 @@ const LogInPage = () => {
 
             <div className="text-center mb-4">
               <div className="text-gray-500 mb-2">또는 소셜 계정으로 로그인</div>
-              <button className="px-4 py-2 w-full bg-red-500 text-white rounded mb-2">구글 로그인</button>
-              <button className="px-4 py-2 w-full bg-green-400 text-white rounded mb-2">네이버 로그인</button>
-              <button className="px-4 py-2 w-full bg-black text-white rounded">Github 로그인</button>
+              <button onClick={googleLogin} className="px-4 py-2 w-full bg-red-500 text-white rounded mb-2">
+                구글 로그인
+              </button>
+
+              <button onClick={kakaoLogin} className="px-4 py-2 w-full bg-yellow-300 text-white rounded">
+                카카오 로그인
+              </button>
             </div>
           </div>
         </div>

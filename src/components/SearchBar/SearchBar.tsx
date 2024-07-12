@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');

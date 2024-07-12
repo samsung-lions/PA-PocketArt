@@ -3,13 +3,16 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/supabase/supabase';
-
+import { useUserStore } from '@/stores/user';
+//타입지정5-11
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
 
+  // const { logInUser, logOutUser, user } = useUserStore((state) => state);
+  // console.log(user);
   const [error, setError] = useState({
     password: '',
     passwordConfirm: '',
@@ -38,17 +41,7 @@ const SignUpPage = () => {
 
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
-    // if (e.target.value.length < 6) {
-    //   setError({
-    //     ...error,
-    //     passwordConfirm: '비밀번호 확인은 최소 6자 입니다.'
-    //   });
-    // } else {
-    //   setError({
-    //     ...error,
-    //     passwordConfirm: ''
-    //   });
-    // }
+
     if (password !== e.target.value) {
       setError({
         ...error,
