@@ -1,8 +1,16 @@
-import { User } from '@/types/user.type';
+// import { User } from '@/types/user.type';
+
+import { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export const useUserStore = create(
+interface UserState {
+  user: User | null;
+  logInUser: (user: User) => void;
+  logOutUser: () => void;
+}
+
+export const useUserStore = create<UserState, [['zustand/persist', UserState]]>(
   persist(
     (set) => ({
       user: null,

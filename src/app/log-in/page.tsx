@@ -1,20 +1,16 @@
 'use client';
 
 import React, { useRef } from 'react';
-
 import Link from 'next/link';
-
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/stores/user';
 
 const LogInPage = () => {
-  //login
   const { logInUser } = useUserStore((state) => state);
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +24,6 @@ const LogInPage = () => {
       return;
     }
 
-    //로그인
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -41,9 +36,9 @@ const LogInPage = () => {
     const {
       data: { user }
     } = await supabase.auth.getUser();
-    console.log(user);
+    // console.log(user);
     if (!user) return;
-    //쥬스탠드 전역상태 저장
+
     logInUser(user);
     alert('로그인 성공!');
     router.replace('/');
