@@ -1,24 +1,19 @@
 'use client';
-
 import { PAGE_SIZE } from '@/app/api/pokemons/route';
 import { Pokemon } from '@/types/Pokemon.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PokemonCard from '../PokemonCard';
-import { useState } from 'react';
 import Spinner from '../Spinner';
-
-// 포켓몬 데이터를 가져오는 함수
 const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
   const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
   return { data, nextPage: pageParam + 1 };
 };
-
 const PokemonList = () => {
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     data: pokemons,
     fetchNextPage,
@@ -29,30 +24,24 @@ const PokemonList = () => {
     queryKey: ['pokemon', { list: true }],
     queryFn: fetchPokemons,
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.length < PAGE_SIZE) return undefined; // 마지막 페이지
+      if (lastPage.data.length < PAGE_SIZE) return undefined;
       return lastPage.nextPage;
     },
     initialPageParam: 1
   });
-
   const { ref, inView } = useInView({
     triggerOnce: false,
-    rootMargin: '200px' // 뷰포트 끝에서 200px 지점에 도달하면 콜백 실행
+    rootMargin: '200px'
   });
-
-  // inView 값이 true로 변경될 때 fetchNextPage 호출
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchNextPage();
   }
-
+  const handleCardClick = (): void => {
+    setLoading(true);
+  };
   if (isLoading) {
     return <div className="text-xl font-semibold text-center py-10">몬스터 볼 던지는 중...🍃</div>;
   }
-
-  const handleCardClick = () => {
-    setLoading(true);
-  };
-
   return (
     <>
       {loading && <Spinner />}
@@ -75,5 +64,4 @@ const PokemonList = () => {
     </>
   );
 };
-
 export default PokemonList;
