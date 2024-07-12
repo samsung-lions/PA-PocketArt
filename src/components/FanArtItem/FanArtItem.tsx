@@ -40,6 +40,10 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
     setIsClickDeleteButton(true);
   };
 
+  const cancelDelete = (): void => {
+    setIsClickDeleteButton(false);
+  };
+
   return (
     <div className="flex justify-center border rounded p-6 gap-x-6">
       <div className="flex justify-center items-center shadow-md rounded hover:scale-110 transition">
@@ -66,6 +70,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
                 label: '팬아트를 삭제하시겠습니까?'
               }}
               handleClick={handleClickDeleteButton}
+              handleClickCancel={cancelDelete}
             />
           )}
           <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>

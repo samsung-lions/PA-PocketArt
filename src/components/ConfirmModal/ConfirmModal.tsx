@@ -8,9 +8,12 @@ import Button from '../Button';
 interface ModalProps {
   modalOptions: ModalType | null;
   handleClick: () => void | Promise<void>;
+  handleClickCancel?: () => void;
 }
-function ConfirmModal({ modalOptions, handleClick }: ModalProps) {
+
+function ConfirmModal({ modalOptions, handleClick, handleClickCancel }: ModalProps) {
   const modal = useConfirm();
+
   return (
     <BackDrop>
       <div className="bg-white border rounded-md p-4 w-[320px] shadow-sm" onClick={(e) => e.stopPropagation()}>
@@ -24,7 +27,7 @@ function ConfirmModal({ modalOptions, handleClick }: ModalProps) {
           <Button size={'half'} onClick={handleClick}>
             확인
           </Button>
-          <Button size={'half'} intent={'submit'} onClick={() => modal.off()}>
+          <Button size={'half'} intent={'submit'} onClick={handleClickCancel || (() => modal.off())}>
             취소
           </Button>
         </div>
