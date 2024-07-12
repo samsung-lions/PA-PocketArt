@@ -9,7 +9,7 @@ const SearchBar: React.FC = () => {
   const [searchCategory, setSearchCategory] = useState<string>('name');
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleSearch = useCallback(
     throttle((e: React.FormEvent<HTMLFormElement>) => {
