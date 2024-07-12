@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/supabase/supabase';
 import { useUserStore } from '@/stores/user';
-//타입지정5-11
+
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -101,7 +101,6 @@ const SignUpPage = () => {
 
     router.replace('/');
   };
-  //유효성 검사
 
   return (
     <form onSubmit={onSubmit}>

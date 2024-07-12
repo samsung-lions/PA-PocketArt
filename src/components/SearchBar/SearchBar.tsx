@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { throttle } from 'lodash';
 import { useUserStore } from '@/stores/user';
 
 const SearchBar = () => {
@@ -11,10 +12,13 @@ const SearchBar = () => {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push(`/pokemons?search=${searchTerm}&category=${searchCategory}`);
-  };
+  const handleSearch = useCallback(
+    throttle((e: React.FormEvent) => {
+      e.preventDefault();
+      router.push(`/pokemons?search=${searchTerm}&category=${searchCategory}`);
+    }, 300),
+    [searchTerm, searchCategory]
+  );
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);

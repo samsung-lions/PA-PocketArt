@@ -28,7 +28,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
     onSuccess: () => {
       toast.on({ label: '팬아트가 등록되었습니다!' });
 
-      queryClient.invalidateQueries({ queryKey: ['fanArt', { list: true }] });
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
 
       setIsOpenedForm(false);
       setImageFile(null);
@@ -87,7 +87,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
               onChange={showFanArtPreview}
             />
             <textarea
-              className="w-full flex-grow bg-white text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
+              className="w-full resize-none flex-grow bg-white text-[#212121] rounded px-4 py-2.5 focus:scale-105 transition"
               value={content}
               onChange={handleChangeContentTextArea}
               placeholder="팬아트에 대해 소개해주세요."
