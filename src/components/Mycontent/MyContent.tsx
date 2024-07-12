@@ -56,6 +56,13 @@ const MyContent: React.FC = () => {
 
   if (loading) return <Spinner />;
   if (error) return <div>{error}</div>;
+  if (comments.length === 0) {
+    return (
+      <div>
+        <div className="text-center text-xl text-gray-600 m-36">아직 팬아트 를 올리지 않았습니다...🍃</div>;
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-8">

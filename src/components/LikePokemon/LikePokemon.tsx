@@ -50,6 +50,19 @@ export const LikePokemon = () => {
   if (isLoading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
+  if (pokemonList.length === 0) {
+    return (
+      <div className="p-6 rounded-lg shadow-xl h-[280px] flex items-center justify-center">
+        <p
+          className="text-xl text-gray-600 m-36
+        "
+        >
+          아직 좋아요를 누르지 않았어요...🍃
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 rounded-lg shadow-xl h-[280px] relative">
       <Swiper
