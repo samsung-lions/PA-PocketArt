@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { throttle } from 'lodash';
-import { useUserStore } from '@/stores/user';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
