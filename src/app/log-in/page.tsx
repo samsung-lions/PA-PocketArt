@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useRef } from 'react';
 import Link from 'next/link';
+import React, { useRef } from 'react';
+
+import { useUserStore } from '@/stores/user';
+
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user';
 
 const LogInPage = () => {
   const { logInUser } = useUserStore((state) => state);
@@ -38,7 +40,7 @@ const LogInPage = () => {
     } = await supabase.auth.getUser();
     // console.log(user);
     if (!user) return;
-
+    //쥬스탠드 전역상태 저장
     logInUser(user);
     alert('로그인 성공!');
     router.replace('/');

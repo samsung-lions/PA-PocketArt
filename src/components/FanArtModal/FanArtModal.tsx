@@ -40,7 +40,7 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
     },
     onError: (error) => {
       console.error('팬아트 수정 실패: ', error);
-      setIsLoading(false); // 로딩 상태 해제
+      setIsLoading(false);
     }
   });
 
