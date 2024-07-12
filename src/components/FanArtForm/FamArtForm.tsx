@@ -100,13 +100,7 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
               placeholder="팬아트에 대해 소개해주세요."
             />
             <div className="flex justify-end gap-x-2">
-              <Button
-                intent={'submit'}
-                type="submit"
-                isDisabled={isLoading}
-                onClick={handleSubmitForm}
-                disabled={isLoading}
-              >
+              <Button intent={'submit'} type="submit" isDisabled={isLoading} onClick={handleSubmitForm}>
                 {isLoading ? '등록 중...' : '작성 완료'}
               </Button>
               <Button intent={'cancel'} type="button" onClick={changeIsOpenedForm}>
