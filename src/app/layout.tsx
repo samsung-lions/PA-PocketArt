@@ -4,6 +4,7 @@ import { ToastProvider } from '@/contexts/toast.context';
 import QueryProvider from '@/react-query/QueryProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Header from './_components/Header';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,7 +28,10 @@ export default function RootLayout({
         <QueryProvider>
           <ToastProvider>
             <ConfirmProvider>
-              <FormModalProvider>{children}</FormModalProvider>
+              <FormModalProvider>
+                <Header />
+                {children}
+              </FormModalProvider>
             </ConfirmProvider>
           </ToastProvider>
         </QueryProvider>
