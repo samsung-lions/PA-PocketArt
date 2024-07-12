@@ -11,28 +11,40 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Spinner from '../Spinner';
+import { useRouter } from 'next/navigation';
 
 const fetchPokemon = async (id: string): Promise<Pokemon> => {
   const response = await axios.get(`http://localhost:3000/api/pokemons/${id}`);
   return response.data;
 };
 
-const fetchLikedPokemons = async () => {
-  const { data, error } = await supabase.from('Likes').select('*');
-  if (error) {
-    throw error;
-  }
-
-  const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
-  return await Promise.all(pokemonData);
-};
-
 export const LikePokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
+    const fetchLikedPokemons = async () => {
+      // const {
+      //   data: { user },
+      //   error: userError
+      // } = await supabase.auth.getUser();
+
+      // if (userError || !user) {
+      //   alert('로그인하세요');
+      //   router.push(`/log-in`);
+      //   return;
+      // }
+
+      const { data, error } = await supabase.from('Likes').select('*');
+      // .eq('userId', user.id);
+      if (error) {
+        throw error;
+      }
+
+      const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
+      return await Promise.all(pokemonData);
+    };
     fetchLikedPokemons()
       .then((data) => {
         setPokemonList(data);
@@ -48,14 +60,20 @@ export const LikePokemon = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="p-6 rounded-lg shadow-xl h-[300px]">
+    <div className="p-6 rounded-lg shadow-xl h-[245px] relative">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
         slidesPerView={6}
-        navigation
-        pagination={{ clickable: true }}
-        className="mySwiper h-[250px]"
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }}
+        pagination={{
+          clickable: true,
+          bulletActiveClass: 'swiper-pagination-bullet-active'
+        }}
+        className="mySwiper h-[200px]"
       >
         {pokemonList.map((item) => (
           <SwiperSlide key={item.id} className="flex items-center justify-center">
@@ -75,6 +93,8 @@ export const LikePokemon = () => {
             </Link>
           </SwiperSlide>
         ))}
+        <div className=" swiper-button-next after:text-[#FFD400] after:text-2xl"></div>
+        <div className=" swiper-button-prev after:text-[#FFD400] after:text-2xl"></div>
       </Swiper>
     </div>
   );
