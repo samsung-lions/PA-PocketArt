@@ -1,9 +1,7 @@
 'use client';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import supabase from '@/supabase/supabase';
-import { useUserStore } from '@/stores/user';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -105,9 +103,6 @@ const SignUpPage = () => {
   return (
     <form onSubmit={onSubmit}>
       <div className=" bg-gray-100 min-h-screen ">
-        <div className="bg-black  p-5">
-          <Image src="/logo.png" alt="로고" width={70} height={50} />
-        </div>
         <div className="flex justify-center mt-12">
           <div className="text-center w-60 rounded-full text-3xl font-bold p-4 bg-white shadow-md">회원가입</div>
         </div>
@@ -136,7 +131,7 @@ const SignUpPage = () => {
                   onChange={onChangePassword}
                 />
               </div>
-              {error.password && <p className="text-red-500">{error.password}</p>}
+              {error.password && <p className="text-red">{error.password}</p>}
               <div className="mb-4">
                 <label className="block text-left font-medium mb-2">비밀번호 확인</label>
                 <input
@@ -148,7 +143,7 @@ const SignUpPage = () => {
                   onChange={onChangePasswordConfirm}
                 />
               </div>
-              {error.passwordConfirm && <p className="text-red-500">{error.passwordConfirm}</p>}
+              {error.passwordConfirm && <p className="text-red">{error.passwordConfirm}</p>}
               <div className="mb-4">
                 <label className="block text-left font-medium mb-2">닉네임</label>
                 <input
@@ -160,9 +155,9 @@ const SignUpPage = () => {
                   onChange={onChangeNickname}
                 />
               </div>
-              {error.nickname && <p className="text-red-500">{error.nickname}</p>}
+              {error.nickname && <p className="text-red">{error.nickname}</p>}
               <div className="text-center">
-                <button type="submit" className="px-4 py-2 w-80 bg-yellow-500 text-white rounded">
+                <button type="submit" className="px-4 py-2 w-80 bg-yellow text-white rounded">
                   회원가입
                 </button>
               </div>
