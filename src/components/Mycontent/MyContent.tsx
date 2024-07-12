@@ -18,7 +18,7 @@ const MyContent: React.FC = () => {
       const { data, error } = await supabase.from('FanArts').select('*');
 
       if (error) {
-        console.error('Error fetching comments:', error);
+        console.error('error:', error);
         router.push('/404');
       } else {
         setComments(data);
