@@ -62,37 +62,40 @@ const FanArtItem = ({ fanArt, user }: FanArtItemProps) => {
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center gap-x-1">
             <Image
-              src={fanArt.user?.profileURL || '/default-profile.jpg'}
+              src={fanArt.user.profileURL || '/default-profile.jpg'}
               alt="사용자이미지"
               width={40}
               height={40}
               className="rounded-full"
             />
-            <span className="font-semibold px-1.5 text-[#212121]">{fanArt.user?.nickname}</span>
+            <span className="font-semibold px-1.5 text-[#212121]">{fanArt.user.nickname}</span>
           </div>
           <span className="text-sm text-slate-500">{fanArt.createdAt}</span>
         </div>
 
         <div className="w-full flex-grow text-lg bg-slate-100 text-[#212121] rounded px-6 py-4">{fanArt.content}</div>
-
-        <div className="flex justify-end gap-x-2">
-          {isClickDeleteButton && (
-            <ConfirmModal
-              modalOptions={{
-                label: '팬아트를 삭제하시겠습니까?'
-              }}
-              handleClick={handleClickDeleteButton}
-              handleClickCancel={cancelDelete}
-              isLoading={isLoading}
-            />
-          )}
-          <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>
-            수정
-          </Button>
-          <Button intent={'cancel'} type="button" onClick={confirmDelete}>
-            삭제
-          </Button>
-        </div>
+        {user && user.id === fanArt.user.id ? (
+          <div className="flex justify-end gap-x-2">
+            {isClickDeleteButton && (
+              <ConfirmModal
+                modalOptions={{
+                  label: '팬아트를 삭제하시겠습니까?'
+                }}
+                handleClick={handleClickDeleteButton}
+                handleClickCancel={cancelDelete}
+                isLoading={isLoading}
+              />
+            )}
+            <Button intent={'submit'} type="submit" onClick={handleClickUpdateButton}>
+              수정
+            </Button>
+            <Button intent={'cancel'} type="button" onClick={confirmDelete}>
+              삭제
+            </Button>
+          </div>
+        ) : (
+          <div className="text-lg text-bold text-slate-200 text-right px-3 py-1.5">Pocket Art.</div>
+        )}
       </div>
     </div>
   );
