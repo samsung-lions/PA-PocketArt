@@ -3,30 +3,33 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/types/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+
 import { useEffect, useState } from 'react';
 
 type Comment = Database['public']['Tables']['FanArts']['Row'];
 
 const MyContent: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
-  const router = useRouter();
+
   const supabase = createClientComponentClient<Database>();
 
   useEffect(() => {
     const fetchComments = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
       const { data, error } = await supabase.from('FanArts').select('*');
 
       if (error) {
-        console.error('error:', error);
-        router.push('/404');
+        throw error;
       } else {
         setComments(data);
       }
     };
 
     fetchComments();
-  }, [router, supabase]);
+  }, []);
 
   return (
     <div className="min-h-screen p-8">

@@ -11,7 +11,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Spinner from '../Spinner';
-import { useRouter } from 'next/navigation';
 
 const fetchPokemon = async (id: string): Promise<Pokemon> => {
   const response = await axios.get(`http://localhost:3000/api/pokemons/${id}`);
@@ -22,22 +21,14 @@ export const LikePokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+
   useEffect(() => {
     const fetchLikedPokemons = async () => {
-      // const {
-      //   data: { user },
-      //   error: userError
-      // } = await supabase.auth.getUser();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
 
-      // if (userError || !user) {
-      //   alert('로그인하세요');
-      //   router.push(`/log-in`);
-      //   return;
-      // }
-
-      const { data, error } = await supabase.from('Likes').select('*');
-      // .eq('userId', user.id);
+      const { data, error } = await supabase.from('Likes').select('*').eq('userId', user.id);
       if (error) {
         throw error;
       }
@@ -64,7 +55,7 @@ export const LikePokemon = () => {
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
-        slidesPerView={6}
+        slidesPerView={3}
         navigation={{
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
