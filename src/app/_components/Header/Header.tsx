@@ -7,24 +7,31 @@ import { useUserStore } from '@/stores/user';
 import { User } from '@supabase/supabase-js';
 import supabase from '@/supabase/supabase';
 import { useToast } from '@/contexts/toast.context';
+import DefaultImage from '../../../../public/default-profile.jpg';
 
 function Header() {
   const router = useRouter();
   const { user, logOutUser } = useUserStore((state) => state);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   const [nickName, setNickName] = useState<string>();
+  const [userImage, setuserImage] = useState<{
+    nickname: string;
+    profile_img: string | null;
+  } | null>();
   const toast = useToast();
 
   useEffect(() => {
     async function getNickname() {
       if (!user) return;
-      const { data, error } = await supabase.from('Users').select('nickname').eq('id', user.id).single();
+      const { data, error } = await supabase.from('Users').select('nickname,profile_img').eq('id', user.id).single();
+      setuserImage(data?.profile_img);
       setNickName(data?.nickname);
     }
     setLoggedInUser(user);
     getNickname();
   }, [user]);
-
+  console.log(nickName);
+  console.log(userImage);
   const handleLogInClick = () => {
     router.push('/log-in');
   };
@@ -50,7 +57,10 @@ function Header() {
       <div className="ml-auto flex items-center space-x-4">
         {loggedInUser ? (
           <>
-            <span className="text-white">{nickName}</span>
+            <div className="flex flex-col justify-center items-center text-center ">
+              <Image src={userImage ?? DefaultImage} width={50} height={30} className="rounded-full" />
+              <span className="text-white ">{nickName}</span>
+            </div>
             <button type="button" onClick={handleMypageClick} className="bg-yellow px-4 py-2 rounded">
               마이페이지
             </button>
