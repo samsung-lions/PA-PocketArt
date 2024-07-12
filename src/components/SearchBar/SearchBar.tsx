@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { throttle } from 'lodash';
-import { useUserStore } from '@/stores/user';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
