@@ -1,10 +1,10 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useRef } from 'react';
 
-import Link from 'next/link';
-
 import { useUserStore } from '@/stores/user';
+
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +13,6 @@ const LogInPage = () => {
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +26,6 @@ const LogInPage = () => {
       return;
     }
 
-    //로그인
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -54,10 +52,7 @@ const LogInPage = () => {
       options: { queryParams: { access_type: 'offline', prompt: 'consent' } }
     });
 
-    console.log(data);
     if (data) {
-      // const { data: user } = await supabase.from('Users').insert({ email, nickname, provider });
-
       alert('구글로 로그인 되었습니다');
       return;
     }
@@ -67,7 +62,6 @@ const LogInPage = () => {
       return;
     }
   };
-  //유저테이블 넣는 방식으로
 
   const kakaoLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
