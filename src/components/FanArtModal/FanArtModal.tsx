@@ -32,6 +32,8 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
       toast.on({ label: '팬아트가 수정되었습니다.' });
       confirmToast.off();
 
+      queryClient.refetchQueries({ queryKey: ['fanArt'], type: 'active' });
+
       form.close();
     },
     onError: (error) => console.error('팬아트 수정 실패: ', error)
@@ -91,7 +93,10 @@ const FanArtModal = ({ postId, fanArt }: FanArtItemProps) => {
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 z-20 bg-black bg-opacity-50 flex justify-center items-center">
-      <form className="flex rounded-lg justify-center p-6 gap-x-6 bg-white mb-12 scale-125">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="flex rounded-lg justify-center p-6 gap-x-6 bg-white mb-12 scale-125"
+      >
         <div className="flex justify-center items-center shadow-md rounded hover:scale-110 transition">
           <div className="relative w-[300px] h-[300px] aspect-square">
             <Image src={preview} alt="Pocket Art" fill className="object-contain rounded bg-white" />
