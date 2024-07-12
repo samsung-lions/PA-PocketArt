@@ -112,13 +112,12 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
 
   return (
     <div className="flex flex-col items-center relative w-80 h-[320px] p-8 rounded-3xl text-center shadow-lg hover:shadow-xl transition">
-      <div className="relative mb-6">
+      <div className="relative w-[120px] h-[120px] aspect-square mb-6">
         <Image
           src={url || defaultImg}
           alt="프로필"
-          width={120}
-          height={120}
-          className="rounded-full object-cover border-4 border-black shadow-xl"
+          fill
+          className="rounded-full object-contain border-4 border-black shadow-xl"
         />
         <label className="material-symbols-outlined absolute bottom-1 right-1 bg-black text-white p-2 rounded-full cursor-pointer hover:bg-[#ffD400] hover:scale-110 transition">
           edit

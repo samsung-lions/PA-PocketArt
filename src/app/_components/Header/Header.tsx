@@ -7,8 +7,8 @@ import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import DefaultImage from '../../../../public/default-profile.jpg';
 import { useEffect, useState } from 'react';
+import DefaultImage from '../../../../public/default-profile.jpg';
 
 function Header() {
   const router = useRouter();
@@ -56,14 +56,16 @@ function Header() {
       <div className="ml-auto flex items-center space-x-4">
         {loggedInUser ? (
           <>
-            <Image
-              onClick={handleMypageClick}
-              src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
-              alt="프로필 이미지"
-              width={50}
-              height={30}
-              className="rounded-full hover:cursor-pointer"
-            />
+            <div className="relative w-[50px] h-[50px] aspect-square">
+              <Image
+                onClick={handleMypageClick}
+                src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
+                alt="프로필 이미지"
+                fill
+                className="rounded-full hover:cursor-pointer object-contain"
+              />
+            </div>
+
             <span className="text-white ">{userInfo.nickname}</span>
             <Button size={'lg'} type="button" onClick={handleLogOutClick}>
               로그아웃
