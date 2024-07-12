@@ -30,7 +30,7 @@ const MyContent: React.FC = () => {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-yellow-400 text-4xl font-bold mb-8 text-center">Fan Arts</h1>
+      <h2 className="text-[#ffD400] text-4xl font-bold mb-8 text-center">Fan Arts</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {comments.map((comment) => (
           <div

@@ -48,27 +48,27 @@ export const LikePokemon = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className=" p-6 rounded-lg shadow-xl ">
+    <div className="p-6 rounded-lg shadow-xl h-[300px]">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
         slidesPerView={6}
         navigation
         pagination={{ clickable: true }}
-        className="mySwiper"
+        className="mySwiper h-[250px]"
       >
         {pokemonList.map((item) => (
-          <SwiperSlide key={item.id}>
-            <Link href={`/pokemons/${item.id}`}>
-              <div className="  p-4 rounded-lg shadow-md transition-transform hover:scale-105">
-                <h3 className=" text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
-                <div className="flex justify-center">
+          <SwiperSlide key={item.id} className="flex items-center justify-center">
+            <Link href={`/pokemons/${item.id}`} className="w-full h-full">
+              <div className="p-4 rounded-lg shadow-md transition-transform hover:scale-105 h-full flex flex-col justify-between">
+                <h3 className="text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
+                <div className="flex-grow flex items-center justify-center">
                   <Image
                     src={item.sprites.front_default}
                     alt={item.name}
-                    width={100}
-                    height={100}
-                    className="rounded-full  p-2"
+                    width={120}
+                    height={120}
+                    className="rounded-full p-2"
                   />
                 </div>
               </div>
