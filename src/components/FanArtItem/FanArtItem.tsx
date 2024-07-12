@@ -10,7 +10,7 @@ import { useState } from 'react';
 import Button from '../Button';
 import ConfirmModal from '../ConfirmModal';
 
-const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
+const FanArtItem = ({ fanArt, user }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -35,7 +35,7 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
   });
 
   const handleClickUpdateButton = (): void => {
-    form.open({ postId, fanArt });
+    form.open({ fanArt, user });
   };
 
   const handleClickDeleteButton = async (): Promise<void> => {
@@ -61,8 +61,14 @@ const FanArtItem = ({ postId, fanArt }: FanArtItemProps) => {
       <div className="flex flex-col flex-grow gap-y-3">
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center gap-x-1">
-            <Image src={fanArt.user.profileURL} alt="사용자이미지" width={40} height={40} className="rounded-full" />
-            <span className="font-semibold px-1.5 text-[#212121]">{fanArt.user.nickname}</span>
+            <Image
+              src={fanArt.user?.profileURL || '/default-profile.jpg'}
+              alt="사용자이미지"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <span className="font-semibold px-1.5 text-[#212121]">{fanArt.user?.nickname}</span>
           </div>
           <span className="text-sm text-slate-500">{fanArt.createdAt}</span>
         </div>

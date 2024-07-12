@@ -6,6 +6,7 @@ export async function POST(request: NextRequest) {
   const imageFile = data.get('imageFile') as File;
   const content = data.get('content') as string;
   const postId = data.get('postId') as string;
+  const writerId = data.get('writerId') as string;
 
   const extension = imageFile.name.split('.').slice(-1)[0];
   const filename = `/${crypto.randomUUID()}.${extension}`;
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   const fanArtURL = imageFileData?.fullPath;
 
-  const { error: insertError } = await supabase.from('FanArts').insert({ content, fanArtURL, postId });
+  const { error: insertError } = await supabase.from('FanArts').insert({ content, fanArtURL, postId, writerId });
 
   if (insertError) {
     throw new Error(insertError.message);
