@@ -18,6 +18,7 @@ const MyContent: React.FC = () => {
       const {
         data: { user }
       } = await supabase.auth.getUser();
+      console.log('user:', user);
 
       const { data, error } = await supabase.from('FanArts').select('*');
 

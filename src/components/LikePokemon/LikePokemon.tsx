@@ -51,7 +51,7 @@ export const LikePokemon = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="p-6 rounded-lg shadow-xl h-[245px] relative">
+    <div className="p-6 rounded-lg shadow-xl h-[280px] relative">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
@@ -64,7 +64,7 @@ export const LikePokemon = () => {
           clickable: true,
           bulletActiveClass: 'swiper-pagination-bullet-active'
         }}
-        className="mySwiper h-[200px]"
+        className="mySwiper h-[250px]"
       >
         {pokemonList.map((item) => (
           <SwiperSlide key={item.id} className="flex items-center justify-center">
