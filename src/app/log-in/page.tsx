@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useRef } from 'react';
 import Link from 'next/link';
+import React, { useRef } from 'react';
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/stores/user';
+import { useToast } from '@/contexts/toast.context';
 
 const LogInPage = () => {
   const { logInUser } = useUserStore((state) => state);
-
+  const toast = useToast();
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
@@ -20,7 +21,7 @@ const LogInPage = () => {
     const password = passwordRef.current?.value;
 
     if (!email || !password) {
-      alert('이메일,비밀번호를 입력해주세요!');
+      toast.on({ label: '이메일,비밀번호를 입력해주세요!' });
       return;
     }
 
@@ -30,17 +31,17 @@ const LogInPage = () => {
     });
 
     if (error) {
-      alert(error.message);
+      toast.on({ label: '계정이 없습니다' });
       return;
     }
     const {
       data: { user }
     } = await supabase.auth.getUser();
-    // console.log(user);
-    if (!user) return;
 
+    if (!user) return;
+    //쥬스탠드 전역상태 저장
     logInUser(user);
-    alert('로그인 성공!');
+    toast.on({ label: '로그인 성공!' });
     router.replace('/');
   };
 
@@ -51,12 +52,12 @@ const LogInPage = () => {
     });
 
     if (data) {
-      alert('구글로 로그인 되었습니다');
+      toast.on({ label: '구글로 로그인 되었습니다' });
       return;
     }
 
     if (error) {
-      console.log(error.message);
+      toast.on({ label: '구글로 로그인이 불가능합니다' });
       return;
     }
   };
@@ -68,11 +69,11 @@ const LogInPage = () => {
     });
 
     if (data) {
-      alert('카카오 로그인 되었습니다');
+      toast.on({ label: '카카오 로그인 되었습니다' });
       return;
     }
     if (error) {
-      console.log(error.message);
+      toast.on({ label: '카카오로 로그인이 불가능합니다' });
       return;
     }
   };
