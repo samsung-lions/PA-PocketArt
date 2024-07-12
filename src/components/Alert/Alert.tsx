@@ -9,7 +9,7 @@ interface AlertProps {
 }
 
 const alertVariants = cva(
-  'bg-gray-200 border border-l-4 border-l-gray-500 w-[300px] translation rounded-md px-4 py-3 shadow-sm flex flex-row justify-between items-center duration-500',
+  'm-3 bg-gray-200 border border-l-4 border-l-gray-500 translation rounded-md px-4 py-3 shadow-sm flex flex-row justify-between items-center duration-500',
   {
     variants: {
       isDisplayed: {
@@ -40,7 +40,7 @@ function Alert({ toast }: AlertProps) {
         <span>{toast.label}</span>
       </div>
 
-      <div>
+      <div className="ml-3">
         <Image
           src={CloseIcon}
           width={15}

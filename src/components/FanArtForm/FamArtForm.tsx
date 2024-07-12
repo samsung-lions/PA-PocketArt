@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
-const FanArtForm = ({ postId }: FanArtSectionProps) => {
+const FanArtForm = ({ postId, user }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -70,12 +70,15 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
 
     setIsLoading(true);
 
-    const formData = new FormData();
-    formData.append('imageFile', imageFile);
-    formData.append('content', content);
-    formData.append('postId', postId);
+    if (user !== null) {
+      const formData = new FormData();
+      formData.append('imageFile', imageFile);
+      formData.append('content', content);
+      formData.append('postId', postId);
+      formData.append('writerId', user.id);
 
-    createFanArt(formData);
+      createFanArt(formData);
+    }
   };
 
   return (
@@ -110,8 +113,15 @@ const FanArtForm = ({ postId }: FanArtSectionProps) => {
           </div>
         </form>
       ) : (
-        <div className="flex justify-end px-3 mb-3">
-          <Button onClick={changeIsOpenedForm}>팬아트 작성</Button>
+        <div className="flex justify-end px-3 mb-3 items-center gap-x-3">
+          {user === null ? (
+            <span className="text-[#ffd400] font-bold text-sm">*팬아트 작성은 로그인 후 이용해 주세요!</span>
+          ) : (
+            ''
+          )}
+          <Button isDisabled={user === null} onClick={changeIsOpenedForm}>
+            팬아트 작성
+          </Button>
         </div>
       )}
     </div>

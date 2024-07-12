@@ -1,3 +1,5 @@
+import { User } from '@supabase/supabase-js';
+
 export type FanArt = {
   id: number;
   content: string;
@@ -6,7 +8,7 @@ export type FanArt = {
   user: {
     id: string;
     nickname: string;
-    profileURL: string;
+    profileURL: string | null;
   };
 };
 export type FanArts = {
@@ -15,9 +17,10 @@ export type FanArts = {
 };
 export interface FanArtSectionProps {
   postId: string;
+  user: User | null;
 }
 
 export interface FanArtItemProps {
-  postId: string;
   fanArt: FanArt;
+  user: User | null;
 }

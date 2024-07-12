@@ -1,36 +1,71 @@
 'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/supabase';
+
+import supabase from '@/supabase/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Database } from '@/types/supabase';
+import Spinner from '../Spinner';
 
 type Comment = Database['public']['Tables']['FanArts']['Row'];
 
 const MyContent: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
-  const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const { data, error } = await supabase.from('FanArts').select('*');
+      try {
+        const {
+          data: { user },
+          error: authError
+        } = await supabase.auth.getUser();
 
-      if (error) {
-        console.error('Error fetching comments:', error);
-        router.push('/404');
-      } else {
-        setComments(data);
+        if (authError) {
+          console.error('Error fetching user:', authError);
+          setError('Error fetching user');
+          setLoading(false);
+          return;
+        }
+
+        if (!user) {
+          setError('User is not logged in');
+          setLoading(false);
+          return;
+        }
+
+        const { data, error: dataError } = await supabase.from('FanArts').select('*').eq('writerId', user.id);
+
+        if (dataError) {
+          console.error('Error fetching comments:', dataError);
+          setError('Error fetching comments');
+        } else {
+          setComments(data);
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+        setError('Unexpected error');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchComments();
-  }, [router, supabase]);
+  }, []);
+
+  if (loading) return <Spinner />;
+  if (error) return <div>{error}</div>;
+  if (comments.length === 0) {
+    return (
+      <div>
+        <div className="text-center text-xl text-gray-600 m-36">아직 팬아트 를 올리지 않았습니다...🍃</div>;
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-yellow-400 text-4xl font-bold mb-8 text-center">Fan Arts</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {comments.map((comment) => (
           <div

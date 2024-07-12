@@ -1,13 +1,14 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import Button from '@/components/Button';
+import { useToast } from '@/contexts/toast.context';
+import { useUserStore } from '@/stores/user';
+import supabase from '@/supabase/supabase';
+import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user';
-import { User } from '@supabase/supabase-js';
-import supabase from '@/supabase/supabase';
-import { useToast } from '@/contexts/toast.context';
 import DefaultImage from '../../../../public/default-profile.jpg';
+import { useEffect, useState } from 'react';
 
 function Header() {
   const router = useRouter();
@@ -48,7 +49,7 @@ function Header() {
   };
 
   return (
-    <div className="bg-black p-5 w-full flex items-center">
+    <div className="bg-black px-10 py-5 w-full flex items-center">
       <Link href="/">
         <Image src="/logo.png" alt="로고" width={70} height={50} />
       </Link>
@@ -64,19 +65,18 @@ function Header() {
               className="rounded-full hover:cursor-pointer"
             />
             <span className="text-white ">{userInfo.nickname}</span>
-
-            <button type="button" onClick={handleLogOutClick} className="bg-yellow px-4 py-2 rounded">
+            <Button size={'lg'} type="button" onClick={handleLogOutClick}>
               로그아웃
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button type="button" onClick={handleLogInClick} className="bg-yellow px-4 py-2 rounded">
+            <Button size={'lg'} type="button" onClick={handleLogInClick}>
               로그인
-            </button>
-            <button type="button" onClick={handleSignUpClick} className="bg-yellow px-4 py-2 rounded">
+            </Button>
+            <Button size={'lg'} type="button" onClick={handleSignUpClick}>
               회원가입
-            </button>
+            </Button>
           </>
         )}
       </div>
