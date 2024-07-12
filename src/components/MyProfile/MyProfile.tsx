@@ -1,10 +1,11 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import supabase from '@/supabase/supabase';
-import { User } from '@supabase/supabase-js';
 import { useToast } from '@/contexts/toast.context';
 import { useUserStore } from '@/stores/user';
+import supabase from '@/supabase/supabase';
+import { User } from '@supabase/supabase-js';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import Button from '../Button';
 
 interface ProfileFormProps {}
 const defaultImg = 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/avatars/default_profile.jpg';
@@ -46,6 +47,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     if (getUser) {
       setUrl(getUser.profile_img || '');
       setNickname(getUser.nickname || '');
+      setNewNickname(getUser.nickname || '');
     }
   };
 
@@ -109,16 +111,15 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
   };
 
   return (
-    <div className="flex flex-col items-center relative w-80 p-8 rounded-3xl text-center shadow-lg m-10">
-      <div className="relative mb-6">
+    <div className="flex flex-col items-center relative w-80 h-[320px] p-8 rounded-3xl text-center shadow-lg hover:shadow-xl transition">
+      <div className="relative w-[120px] h-[120px] aspect-square mb-6">
         <Image
           src={url || defaultImg}
           alt="프로필"
-          width={120}
-          height={120}
-          className="rounded-full object-cover border-4 border-black shadow-xl"
+          fill
+          className="rounded-full object-contain border-4 border-black shadow-xl"
         />
-        <label className="material-symbols-outlined absolute bottom-1 right-1 bg-black text-white p-2 rounded-full cursor-pointer hover:bg-[#ffD400] transition-colors">
+        <label className="material-symbols-outlined absolute bottom-1 right-1 bg-black text-white p-2 rounded-full cursor-pointer hover:bg-[#ffD400] hover:scale-110 transition">
           edit
           <input type="file" className="hidden" onChange={handleFileInputChange} />
         </label>
@@ -130,25 +131,19 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
             type="text"
             value={newNickname}
             onChange={(e) => setNewNickname(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full px-3 py-2 border rounded focus:scale-105 transition"
             placeholder="새 닉네임 입력"
           />
           <div className="flex justify-between mt-2">
-            <button
-              onClick={handleNickNameSave}
-              className="bg-[#ffD400] text-white py-1 px-3 rounded hover:bg-[#e6bf00] transition-colors"
-            >
-              저장
-            </button>
-            <button
+            <Button onClick={handleNickNameSave}>저장</Button>
+            <Button
               onClick={() => {
                 setIsEditingNickname(false);
-                setNewNickname('');
               }}
-              className="bg-gray-300 text-black py-1 px-3 rounded hover:bg-gray-400 transition-colors"
+              intent={'submit'}
             >
               취소
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
@@ -157,7 +152,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
           <button
             type="button"
             onClick={() => setIsEditingNickname(true)}
-            className="w-full bg-black text-white  py-2 px-4 rounded-lg hover:bg-[#ffD400] transition-colors"
+            className="w-full bg-black text-white  py-2 px-4 rounded-lg hover:bg-[#ffD400] hover:scale-105 transition"
           >
             닉네임변경 ⚙
           </button>

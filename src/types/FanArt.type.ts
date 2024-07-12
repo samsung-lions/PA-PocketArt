@@ -15,12 +15,8 @@ export type FanArts = {
   FanArts: FanArt[];
   count: number;
 };
-export interface FanArtSectionProps {
-  postId: string;
-  user: User | null;
-}
 
 export interface FanArtItemProps {
   fanArt: FanArt;
-  user: User | null;
+  user?: User | null;
 }

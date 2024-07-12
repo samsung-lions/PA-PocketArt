@@ -9,7 +9,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Button from '../Button';
 import ConfirmModal from '../ConfirmModal';
 
-const FanArtModal = ({ fanArt, user }: FanArtItemProps) => {
+const FanArtModal = ({ fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
