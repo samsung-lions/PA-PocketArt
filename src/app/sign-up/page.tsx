@@ -6,14 +6,18 @@ import supabase from '@/supabase/supabase';
 import { useUserStore } from '@/stores/user';
 //타입지정5-11
 const SignUpPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
 
   // const { logInUser, logOutUser, user } = useUserStore((state) => state);
   // console.log(user);
-  const [error, setError] = useState({
+  const [error, setError] = useState<{
+    password: string;
+    passwordConfirm: string;
+    nickname: string;
+  }>({
     password: '',
     passwordConfirm: '',
     nickname: ''
@@ -21,10 +25,10 @@ const SignUpPage = () => {
 
   const router = useRouter();
 
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
     if (e.target.value.length < 6) {
       setError({
@@ -39,7 +43,7 @@ const SignUpPage = () => {
     }
   };
 
-  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordConfirm(e.target.value);
 
     if (password !== e.target.value) {
@@ -54,7 +58,7 @@ const SignUpPage = () => {
       });
     }
   };
-  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNickname(e.target.value);
     if (e.target.value.length < 2) {
       setError({
