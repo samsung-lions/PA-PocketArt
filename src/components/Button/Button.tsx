@@ -13,11 +13,16 @@ const buttonVariant = cva('font-semibold transition hover:brightness-110 active:
       md: 'px-4 py-2 text-[15px]',
       lg: 'px-5 py-3 text-[17px]',
       half: 'w-1/2 text-[15px] py-2'
+    },
+    isDisabled: {
+      true: 'cursor-not-allowed',
+      false: ''
     }
   },
   defaultVariants: {
     intent: 'main',
-    size: 'md'
+    size: 'md',
+    isDisabled: false
   }
 });
 
@@ -25,9 +30,9 @@ type ButtonVariantProps = VariantProps<typeof buttonVariant>;
 
 type ButtonProps = {} & ButtonVariantProps & ComponentProps<'button'>;
 
-const Button = ({ intent, size, children, ...props }: ButtonProps) => {
+const Button = ({ intent, size, isDisabled, children, ...props }: ButtonProps) => {
   return (
-    <button className={buttonVariant({ intent, size })} {...props}>
+    <button className={buttonVariant({ intent, size, isDisabled })} {...props}>
       {children}
     </button>
   );

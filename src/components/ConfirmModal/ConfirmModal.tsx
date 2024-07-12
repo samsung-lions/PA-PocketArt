@@ -9,9 +9,10 @@ interface ModalProps {
   modalOptions: ModalType | null;
   handleClick: () => void | Promise<void>;
   handleClickCancel?: () => void;
+  isLoading: boolean;
 }
 
-function ConfirmModal({ modalOptions, handleClick, handleClickCancel }: ModalProps) {
+function ConfirmModal({ modalOptions, handleClick, handleClickCancel, isLoading }: ModalProps) {
   const modal = useConfirm();
 
   return (
@@ -24,8 +25,8 @@ function ConfirmModal({ modalOptions, handleClick, handleClickCancel }: ModalPro
         <h1 className="font-semibold text-xl my-8 text-center">{modalOptions!.label}</h1>
 
         <div className="flex flex-row w-full gap-x-3">
-          <Button size={'half'} onClick={handleClick}>
-            확인
+          <Button size={'half'} onClick={handleClick} isDisabled={isLoading}>
+            {isLoading ? 'Loading..' : '확인'}
           </Button>
           <Button size={'half'} intent={'submit'} onClick={handleClickCancel || (() => modal.off())}>
             취소
