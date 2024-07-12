@@ -1,14 +1,19 @@
 'use client';
 
 import { useToast } from '@/contexts/toast.context';
-import { FanArtSectionProps } from '@/types/FanArt.type';
+import { User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
-const FanArtForm = ({ postId, user }: FanArtSectionProps) => {
+interface FanArtFormProps {
+  postId: string;
+  user: User | null;
+}
+
+const FanArtForm = ({ postId, user }: FanArtFormProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
