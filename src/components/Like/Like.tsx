@@ -39,6 +39,10 @@ function PocketLayout() {
   const addMutation = useMutation({
     mutationFn: handleAddLike,
     onMutate: async () => {
+      if (!user?.id) {
+        toast.on({ label: '로그인이 필요한 서비스입니다' });
+        return;
+      }
       await queryClient.cancelQueries({ queryKey: ['pockets', id] });
       const previousPockets: any = queryClient.getQueryData(['pockets', id]);
       queryClient.setQueryData(['pockets', id], () => {
