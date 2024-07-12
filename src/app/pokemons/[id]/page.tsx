@@ -56,14 +56,19 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
               <div className="flex items-center gap-x-1">
                 <span>타입: </span>
                 {pokemon.types.map((type) => (
-                  <Chip key={type.type.name} label={type.type.korean_name} intent="yellow" />
+                  <Chip id={type.type.name} key={type.type.name} label={type.type.korean_name} intent="yellow" />
                 ))}
               </div>
               /
               <div className="flex items-center gap-x-1">
                 <span>특성: </span>
                 {pokemon.abilities.map((ability) => (
-                  <Chip key={ability.ability.name} label={ability.ability.korean_name} intent="green" />
+                  <Chip
+                    id={ability.ability.name}
+                    key={ability.ability.name}
+                    label={ability.ability.korean_name}
+                    intent="green"
+                  />
                 ))}
               </div>
             </div>
@@ -71,7 +76,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
               <h2 className="text-2xl font-semibold px-2">기술🗡️</h2>
               <div className="flex gap-1 flex-wrap justify-center">
                 {pokemon.moves.map((move) => (
-                  <Chip key={move.move.name} label={move.move.korean_name} />
+                  <Chip id={move.move.name} key={move.move.name} label={move.move.korean_name} />
                 ))}
               </div>
             </div>
