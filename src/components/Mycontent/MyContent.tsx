@@ -30,13 +30,10 @@ const MyContent: React.FC = () => {
         }
 
         if (!user) {
-          console.log('User is not logged in');
           setError('User is not logged in');
           setLoading(false);
           return;
         }
-
-        console.log('user:', user);
 
         const { data, error: dataError } = await supabase.from('FanArts').select('*').eq('writerId', user.id);
 

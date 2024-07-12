@@ -75,10 +75,8 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     const { data, error } = await supabase.from('Users').update({ profile_img: imageUrl }).eq('id', user.id).select();
 
     if (error) {
-      console.log(error);
       toast.on({ label: '저장실패!' });
     } else {
-      console.log('data:', data);
       toast.on({ label: '저장완료!' });
       setUrl(imageUrl);
     }
@@ -97,10 +95,8 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
       .select();
 
     if (error) {
-      console.log(error);
       toast.on({ label: '닉네임 변경 실패!' });
     } else {
-      console.log('data:', data);
       toast.on({ label: '닉네임이 변경되었습니다!' });
       setNickname(newNickname.trim());
       setIsEditingNickname(false);
