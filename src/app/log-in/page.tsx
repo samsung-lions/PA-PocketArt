@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import React, { useRef } from 'react';
+import Button from '@/components/Button';
+import { useToast } from '@/contexts/toast.context';
+import { useUserStore } from '@/stores/user';
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user';
-import { useToast } from '@/contexts/toast.context';
+import React, { useRef } from 'react';
 
 const LogInPage = () => {
   const { logInUser } = useUserStore((state) => state);
@@ -42,7 +42,7 @@ const LogInPage = () => {
     //쥬스탠드 전역상태 저장
     logInUser(user);
     toast.on({ label: '로그인 성공!' });
-    router.replace('/');
+    router.back();
   };
 
   const googleLogin = async () => {
@@ -87,49 +87,59 @@ const LogInPage = () => {
         <div className="flex justify-center mt-12">
           <div className="w-96 rounded-lg text-lg font-bold p-8 bg-white shadow-lg">
             <div className="mb-4">
-              <label className="block text-left font-medium mb-2">이메일</label>
+              <label htmlFor="email" className="block text-left font-medium mb-2">
+                이메일
+              </label>
               <input
                 ref={emailRef}
                 type="email"
                 id="email"
                 placeholder="이메일을 입력해주세요"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:scale-105 transition"
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-left font-medium mb-2">비밀번호</label>
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-left font-medium mb-2">
+                비밀번호
+              </label>
               <input
                 ref={passwordRef}
                 type="password"
                 placeholder="비밀번호를 입력해주세요"
                 id="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:scale-105 transition"
               />
             </div>
 
-            <div className="text-center mb-4">
-              <div>
-                <button type="submit" className="px-4 py-2 w-full bg-yellow text-white rounded">
+            <div className="text-center mb-6">
+              <div className="flex gap-x-2">
+                <Button intent={'logIn'} type="submit" size={'half'}>
                   로그인
-                </button>
-              </div>
-              <div className="pt-5">
-                <Link href="/sign-up" className="text-gray-500 ">
+                </Button>
+                <Button intent={'signUp'} size={'half'} type="button" onClick={() => router.push('/sign-up')}>
                   회원가입
-                </Link>
+                </Button>
               </div>
             </div>
 
             <div className="text-center mb-4">
-              <div className="text-gray-500 mb-2">또는 소셜 계정으로 로그인</div>
-              <button onClick={googleLogin} className="px-4 py-2 w-full bg-red text-white rounded mb-2">
-                구글 로그인
-              </button>
+              <div className="text-gray-500 mb-2 text-sm">또는 소셜 계정으로 로그인</div>
+              <div className="flex gap-x-4 justify-center">
+                <button
+                  onClick={googleLogin}
+                  className="px-3 py-1 text-sm bg-red text-white rounded-full transition hover:brightness-110 active:brightness-125 hover:scale-105"
+                >
+                  Google
+                </button>
 
-              <button onClick={kakaoLogin} className="px-4 py-2 w-full bg-yellow text-white rounded">
-                카카오 로그인
-              </button>
+                <button
+                  onClick={kakaoLogin}
+                  className="px-3.5 py-1 text-sm bg-yellow text-white rounded-full transition hover:brightness-110 active:brightness-125 hover:scale-105"
+                >
+                  Kakao
+                </button>
+              </div>
             </div>
           </div>
         </div>
