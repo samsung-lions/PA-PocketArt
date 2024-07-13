@@ -49,7 +49,7 @@ function Header() {
   };
 
   return (
-    <div className="bg-black px-10 py-5 w-full flex items-center">
+    <div className="bg-black px-32 py-6 w-full flex items-center">
       <Link href="/">
         <Image src="/logo.png" alt="로고" width={70} height={50} />
       </Link>
@@ -62,7 +62,7 @@ function Header() {
                 src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
                 alt="프로필 이미지"
                 fill
-                className="rounded-full hover:cursor-pointer object-contain"
+                className="rounded-full hover:cursor-pointer object-contain border border-white"
               />
             </div>
 

@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 
 const MyPage = () => {
   return (
-    <Page title="My Page">
+    <Page title="My Page" hasBackButton>
       <div className="flex flex-col w-full gap-y-20 my-8 justify-center">
         <div className="flex justify-center gap-x-8">
           <ProfileForm />

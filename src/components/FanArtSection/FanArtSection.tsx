@@ -1,11 +1,10 @@
 'use client';
 
-import { GET } from '@/app/api/fan-art/read/route';
+import { fetchNextPage } from '@/apis/pokemon';
 import supabase from '@/supabase/supabase';
 import { FanArt } from '@/types/FanArt.type';
 import { User } from '@supabase/supabase-js';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
-import { NextRequest } from 'next/server';
 import { useEffect, useRef, useState } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
@@ -17,11 +16,6 @@ export const pageCountPerPage: number = 5;
 interface FanArtSectionProps {
   postId: string;
 }
-
-const fetchNextPage = async (postId: string, page: number) => {
-  const response = await GET(new Request(`/api/fan-art/read?postId=${postId}`) as unknown as NextRequest, page + 1);
-  return response.json();
-};
 
 const FanArtSection = ({ postId }: FanArtSectionProps) => {
   const queryClient = useQueryClient();

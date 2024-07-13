@@ -33,7 +33,7 @@ export function FormModalProvider({ children }: PropsWithChildren) {
   return (
     <FormModalContext.Provider value={value}>
       {children}
-      {modalOptions && <FanArtModal postId={modalOptions.postId} fanArt={modalOptions.fanArt} />}
+      {modalOptions && <FanArtModal fanArt={modalOptions.fanArt} />}
     </FormModalContext.Provider>
   );
 }

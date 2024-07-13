@@ -1,23 +1,14 @@
 'use client';
 
+import { fetchSearchPokemons } from '@/apis/pokemon';
 import Page from '@/components/Page';
 import PokemonCard from '@/components/PokemonCard';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import Spinner from '@/components/Spinner/Spinner';
 import { Pokemon } from '@/types/Pokemon.type';
-import axios from 'axios';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-const fetchPokemons = async (searchParams: URLSearchParams) => {
-  const search = searchParams.get('search') || '';
-  const category = searchParams.get('category') || 'name';
-  const page = searchParams.get('page') || '1';
-
-  const response = await axios.get(`/api/pokemons?search=${search}&category=${category}&page=${page}`);
-  return response.data;
-};
 
 const PokemonListPage = () => {
   const searchParams = useSearchParams();
@@ -30,7 +21,7 @@ const PokemonListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await fetchPokemons(searchParams);
+      const data = await fetchSearchPokemons(searchParams);
       setPokemons(data);
       setSearchInfo({
         search: searchParams.get('search') || '',

@@ -61,13 +61,14 @@ const FanArtItem = ({ fanArt, user }: FanArtItemProps) => {
       <div className="flex flex-col flex-grow gap-y-3">
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center gap-x-1">
-            <Image
-              src={fanArt.user.profileURL || '/default-profile.jpg'}
-              alt="사용자이미지"
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
+            <div className="relative w-[40px] h-[40px] aspect-square">
+              <Image
+                src={fanArt.user.profileURL || '/default-profile.jpg'}
+                alt="사용자이미지"
+                fill
+                className="rounded-full border object-contain"
+              />
+            </div>
             <span className="font-semibold px-1.5 text-[#212121]">{fanArt.user.nickname}</span>
           </div>
           <span className="text-sm text-slate-500">{fanArt.createdAt}</span>
