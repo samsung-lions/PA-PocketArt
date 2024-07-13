@@ -1,5 +1,3 @@
-// import { User } from '@/types/user.type';
-
 import { User } from '@supabase/supabase-js';
 import { UserInfo } from 'os';
 import { create } from 'zustand';
