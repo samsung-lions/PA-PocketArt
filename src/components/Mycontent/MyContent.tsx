@@ -85,7 +85,7 @@ const MyContent: React.FC = () => {
               </div>
 
               <div className="px-8 pb-6">
-                <p className="text-black text-lg font-semibold mb-1">No. {comment.postId} Pocket Fan Art</p>
+                <p className="text-black text-lg font-semibold mb-1">{comment.pokemonName} 팬아트</p>
                 <p className="text-slate-500 text-md">{comment.content}</p>
               </div>
             </Link>

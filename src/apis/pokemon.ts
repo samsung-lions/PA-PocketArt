@@ -1,7 +1,5 @@
-import { GET } from '@/app/api/fan-art/read/route';
 import { Pokemon } from '@/types/Pokemon.type';
 import axios from 'axios';
-import { NextRequest } from 'next/server';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -22,9 +20,4 @@ export const fetchSearchPokemons = async (searchParams: URLSearchParams) => {
 
   const response = await axios.get(`/api/pokemons?search=${search}&category=${category}&page=${page}`);
   return response.data;
-};
-
-export const fetchNextPage = async (postId: string, page: number) => {
-  const response = await GET(new Request(`/api/fan-art/read?postId=${postId}`) as unknown as NextRequest, page + 1);
-  return response.json();
 };

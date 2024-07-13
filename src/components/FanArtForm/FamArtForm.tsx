@@ -10,10 +10,11 @@ import Button from '../Button';
 
 interface FanArtFormProps {
   postId: string;
+  pokemonName: string;
   user: User | null;
 }
 
-const FanArtForm = ({ postId, user }: FanArtFormProps) => {
+const FanArtForm = ({ postId, pokemonName, user }: FanArtFormProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -81,6 +82,7 @@ const FanArtForm = ({ postId, user }: FanArtFormProps) => {
       formData.append('content', content);
       formData.append('postId', postId);
       formData.append('writerId', user.id);
+      formData.append('pokemonName', pokemonName);
 
       createFanArt(formData);
     }

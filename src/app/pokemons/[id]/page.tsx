@@ -82,7 +82,7 @@ const PokemonDetailPage = async ({ params }: PokemonDetailPageProps) => {
             </div>
           </div>
           <Like />
-          <FanArtSection postId={params.id} />
+          <FanArtSection postId={params.id} pokemonName={pokemon.korean_name || pokemon.name} />
         </>
       )}
     </Page>

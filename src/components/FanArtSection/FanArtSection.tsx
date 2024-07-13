@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchNextPage } from '@/apis/pokemon';
+import { fetchNextPage } from '@/apis/fanArt';
 import supabase from '@/supabase/supabase';
 import { FanArt } from '@/types/FanArt.type';
 import { User } from '@supabase/supabase-js';
@@ -15,9 +15,10 @@ export const pageCountPerPage: number = 5;
 
 interface FanArtSectionProps {
   postId: string;
+  pokemonName: string;
 }
 
-const FanArtSection = ({ postId }: FanArtSectionProps) => {
+const FanArtSection = ({ postId, pokemonName }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState<number>(0);
@@ -61,7 +62,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
 
   return (
     <section ref={sectionRef} className="w-full mt-1">
-      <FanArtForm postId={postId} user={user} />
+      <FanArtForm postId={postId} pokemonName={pokemonName} user={user} />
       <div>
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (

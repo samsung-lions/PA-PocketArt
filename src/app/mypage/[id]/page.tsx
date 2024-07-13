@@ -12,7 +12,7 @@ const MyPage = () => {
           <LikePokemon />
         </div>
         <div className="flex flex-col">
-          <h2 className="text-[#ffD400] text-3xl font-bold mb-6 text-center">Fan Arts</h2>
+          <h2 className="text-[#ffD400] text-3xl font-bold mb-6 text-center">My Fan Arts</h2>
           <MyContent />
         </div>
       </div>
