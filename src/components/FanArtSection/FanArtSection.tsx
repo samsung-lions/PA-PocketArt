@@ -27,7 +27,7 @@ const FanArtSection = ({ postId, pokemonName }: FanArtSectionProps) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   const { data: fanArts = [], isLoading } = useQuery({
-    queryKey: ['fanArt', { page: page + 1 }],
+    queryKey: ['fanArt', postId, { page: page + 1 }],
     queryFn: () => fetchNextPage(postId, page),
     placeholderData: keepPreviousData
   });
@@ -46,7 +46,7 @@ const FanArtSection = ({ postId, pokemonName }: FanArtSectionProps) => {
 
   useEffect(() => {
     queryClient.prefetchQuery({
-      queryKey: ['fanArt', { page: page + 1 }],
+      queryKey: ['fanArt', postId, { page: page + 1 }],
       queryFn: () => fetchNextPage(postId, page)
     });
   }, [page, postId, queryClient]);
