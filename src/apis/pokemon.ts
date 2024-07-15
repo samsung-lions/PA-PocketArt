@@ -1,6 +1,9 @@
 import { Pokemon } from '@/types/Pokemon.type';
 import axios from 'axios';
 
+export const TOTAL_POKEMON = 250;
+export const PAGE_SIZE = 20;
+
 export const BASE_URL = 'http://localhost:3000';
 
 export const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
