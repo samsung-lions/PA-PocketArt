@@ -8,7 +8,7 @@ import Spinner from '@/components/Spinner/Spinner';
 import { Pokemon } from '@/types/Pokemon.type';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 const PokemonListPage = () => {
   const searchParams = useSearchParams();
@@ -44,31 +44,33 @@ const PokemonListPage = () => {
 
   return (
     <Page title="포켓몬 도감" width="lg">
-      <div className="w-full flex justify-start px-4 mb-4" onClick={handleBackClick}>
-        <Image src="/icons/ic-back.png" alt="뒤로가기 버튼" width={30} height={30} className="cursor-pointer" />
-      </div>
-      {searchInfo.search && (
-        <div className="text-center text-lg font-semibold mb-4">
-          <span className="text-[#ffd400]">&apos;{searchInfo.search}&apos;</span>에 대한 검색 결과 (
-          {searchInfo.category})
+      <Suspense fallback={<SkeletonLoader />}>
+        <div className="w-full flex justify-start px-4 mb-4" onClick={handleBackClick}>
+          <Image src="/icons/ic-back.png" alt="뒤로가기 버튼" width={30} height={30} className="cursor-pointer" />
         </div>
-      )}
-      {loading ? (
-        <SkeletonLoader />
-      ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
-          {pokemons.map((pokemon) => (
-            <li
-              key={pokemon.id}
-              className="bg-white w-40 h-40 rounded-lg p-4 shadow-md hover:scale-125 transition-transform"
-              onClick={() => handleCardClick(pokemon.id)}
-            >
-              <PokemonCard pokemon={pokemon} />
-            </li>
-          ))}
-        </ul>
-      )}
-      {loadingDetail && <Spinner />}
+        {searchInfo.search && (
+          <div className="text-center text-lg font-semibold mb-4">
+            <span className="text-[#ffd400]">&apos;{searchInfo.search}&apos;</span>에 대한 검색 결과 (
+            {searchInfo.category})
+          </div>
+        )}
+        {loading ? (
+          <SkeletonLoader />
+        ) : (
+          <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-5">
+            {pokemons.map((pokemon) => (
+              <li
+                key={pokemon.id}
+                className="bg-white w-40 h-40 rounded-lg p-4 shadow-md hover:scale-125 transition-transform"
+                onClick={() => handleCardClick(pokemon.id)}
+              >
+                <PokemonCard pokemon={pokemon} />
+              </li>
+            ))}
+          </ul>
+        )}
+        {loadingDetail && <Spinner />}
+      </Suspense>
     </Page>
   );
 };
