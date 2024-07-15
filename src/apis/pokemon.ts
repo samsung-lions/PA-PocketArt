@@ -4,7 +4,7 @@ import axios from 'axios';
 export const TOTAL_POKEMON = 250;
 export const PAGE_SIZE = 20;
 
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://pa-pocket-art-gojp-git-main-yuyeongs-projects.vercel.app';
 
 export const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
   const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
