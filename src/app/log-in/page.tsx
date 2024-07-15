@@ -45,39 +45,6 @@ const LogInPage = () => {
     router.back();
   };
 
-  const googleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { queryParams: { access_type: 'offline', prompt: 'consent' } }
-    });
-
-    if (data) {
-      toast.on({ label: '구글로 로그인 되었습니다' });
-      return;
-    }
-
-    if (error) {
-      toast.on({ label: '구글로 로그인이 불가능합니다' });
-      return;
-    }
-  };
-
-  const kakaoLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: { queryParams: { access_type: 'offline', prompt: 'consent' } }
-    });
-
-    if (data) {
-      toast.on({ label: '카카오 로그인 되었습니다' });
-      return;
-    }
-    if (error) {
-      toast.on({ label: '카카오로 로그인이 불가능합니다' });
-      return;
-    }
-  };
-
   return (
     <form onSubmit={onSubmit}>
       <div className="min-h-screen flex flex-col items-center bg-gray-100">
@@ -120,25 +87,6 @@ const LogInPage = () => {
                 <Button intent={'signUp'} size={'half'} type="button" onClick={() => router.push('/sign-up')}>
                   회원가입
                 </Button>
-              </div>
-            </div>
-
-            <div className="text-center mb-4">
-              <div className="text-gray-500 mb-2 text-sm">또는 소셜 계정으로 로그인</div>
-              <div className="flex gap-x-4 justify-center">
-                <button
-                  onClick={googleLogin}
-                  className="px-3 py-1 text-sm bg-red text-white rounded-full transition hover:brightness-110 active:brightness-125 hover:scale-105"
-                >
-                  Google
-                </button>
-
-                <button
-                  onClick={kakaoLogin}
-                  className="px-3.5 py-1 text-sm bg-yellow text-white rounded-full transition hover:brightness-110 active:brightness-125 hover:scale-105"
-                >
-                  Kakao
-                </button>
               </div>
             </div>
           </div>
