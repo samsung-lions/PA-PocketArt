@@ -1,8 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { NextResponse } from 'next/server';
 
-export const TOTAL_POKEMON = 250;
-export const PAGE_SIZE = 20;
+const TOTAL_POKEMON = 250;
+const PAGE_SIZE = 20;
 
 export const GET = async (request: Request): Promise<NextResponse> => {
   const { searchParams } = new URL(request.url);

@@ -1,10 +1,10 @@
 'use client';
 
 import supabase from '@/supabase/supabase';
+import { Database } from '@/types/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Database } from '@/types/supabase';
 import Spinner from '../Spinner';
 
 type Comment = Database['public']['Tables']['FanArts']['Row'];
@@ -65,25 +65,28 @@ const MyContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
+            className="rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-110"
           >
             <Link href={`/pokemons/${comment.postId}`}>
-              <div className="h-48 relative">
-                <Image
-                  src={`https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/${comment.fanArtURL}`}
-                  alt="Pocket Art"
-                  fill
-                  className="object-contain"
-                />
+              <div className="p-6">
+                <div className="relative aspect-square">
+                  <Image
+                    src={`https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/${comment.fanArtURL}`}
+                    alt="Pocket Art"
+                    fill
+                    className="object-contain border-b border-b-[#212121]"
+                  />
+                </div>
               </div>
-              <div className="p-4">
-                <p className="text-black text-lg font-semibold mb-2">Fan Art #{comment.postId}</p>
-                <p className="text-gray-700">{comment.content}</p>
+
+              <div className="px-8 pb-6">
+                <p className="text-black text-lg font-semibold mb-1">{comment.pokemonName} 팬아트</p>
+                <p className="text-slate-500 text-md">{comment.content}</p>
               </div>
             </Link>
           </div>

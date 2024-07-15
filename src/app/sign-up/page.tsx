@@ -1,4 +1,5 @@
 'use client';
+import Button from '@/components/Button';
 import { useToast } from '@/contexts/toast.context';
 import supabase from '@/supabase/supabase';
 import { useRouter } from 'next/navigation';
@@ -100,7 +101,7 @@ const SignUpPage = () => {
     }
     toast.on({ label: '회원가입이 완료되었습니다!' });
 
-    router.replace('/');
+    router.back();
   };
 
   return (
@@ -113,56 +114,64 @@ const SignUpPage = () => {
           <div className="flex justify-center  mt-12">
             <div className="w-96 rounded-lg text-lg font-bold p-8 bg-white shadow-lg">
               <div className="mb-4">
-                <label className="block text-left font-medium mb-2">이메일</label>
+                <label htmlFor="email" className="block text-left font-medium mb-2">
+                  이메일
+                </label>
                 <input
                   type="email"
                   id="email"
                   value={email}
                   placeholder="이메일을 입력해주세요"
-                  className="w-full px-2 py-1 border border-gray-300 rounded"
+                  className="w-full px-2 py-1 border border-gray-300 rounded focus:scale-105 transition"
                   onChange={onChangeEmail}
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-left font-medium mb-2">비밀번호</label>
+                <label htmlFor="password" className="block text-left font-medium mb-2">
+                  비밀번호
+                </label>
                 <input
                   type="password"
                   value={password}
                   placeholder="비밀번호를 입력해주세요"
                   id="password"
-                  className="w-full px-2 py-1 border border-gray-300 rounded"
+                  className="w-full px-2 py-1 border border-gray-300 rounded focus:scale-105 transition"
                   onChange={onChangePassword}
                 />
               </div>
               {error.password && <p className="text-red">{error.password}</p>}
               <div className="mb-4">
-                <label className="block text-left font-medium mb-2">비밀번호 확인</label>
+                <label htmlFor="passwordConfirm" className="block text-left font-medium mb-2">
+                  비밀번호 확인
+                </label>
                 <input
                   type="password"
                   value={passwordConfirm}
                   placeholder="비밀번호 다시 입력해주세요"
                   id="passwordConfirm"
-                  className="w-full px-2 py-1 border border-gray-300 rounded"
+                  className="w-full px-2 py-1 border border-gray-300 rounded focus:scale-105 transition"
                   onChange={onChangePasswordConfirm}
                 />
               </div>
               {error.passwordConfirm && <p className="text-red">{error.passwordConfirm}</p>}
-              <div className="mb-4">
-                <label className="block text-left font-medium mb-2">닉네임</label>
+              <div className="mb-8">
+                <label htmlFor="nickname" className="block text-left font-medium mb-2">
+                  닉네임
+                </label>
                 <input
                   type="text"
                   id="nickname"
                   value={nickname}
                   placeholder="닉네임을 입력해주세요"
-                  className="w-full px-2 py-1 border border-gray-300 rounded"
+                  className="w-full px-2 py-1 border border-gray-300 rounded focus:scale-105 transition"
                   onChange={onChangeNickname}
                 />
               </div>
               {error.nickname && <p className="text-red">{error.nickname}</p>}
               <div className="text-center">
-                <button type="submit" className="px-4 py-2 w-80 bg-yellow text-white rounded">
+                <Button type="submit" size={'full'}>
                   회원가입
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -1,18 +1,14 @@
 'use client';
 
-import { PAGE_SIZE } from '@/app/api/pokemons/route';
+import { fetchPokemons, PAGE_SIZE } from '@/apis/pokemon';
+
 import { Pokemon } from '@/types/Pokemon.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PokemonCard from '../PokemonCard';
 import Spinner from '../Spinner';
-const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
-  const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
-  return { data, nextPage: pageParam + 1 };
-};
 
 const PokemonList = () => {
   const [loading, setLoading] = useState<boolean>(false);

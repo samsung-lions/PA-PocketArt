@@ -5,22 +5,20 @@ export type FanArt = {
   content: string;
   fanArtURL: string;
   createdAt: string;
+  pokemonName: string;
   user: {
     id: string;
     nickname: string;
     profileURL: string | null;
   };
 };
+
 export type FanArts = {
   FanArts: FanArt[];
   count: number;
 };
-export interface FanArtSectionProps {
-  postId: string;
-  user: User | null;
-}
 
 export interface FanArtItemProps {
   fanArt: FanArt;
-  user: User | null;
+  user?: User | null;
 }

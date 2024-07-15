@@ -1,14 +1,20 @@
 'use client';
 
 import { useToast } from '@/contexts/toast.context';
-import { FanArtSectionProps } from '@/types/FanArt.type';
+import { User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import Button from '../Button';
 
-const FanArtForm = ({ postId, user }: FanArtSectionProps) => {
+interface FanArtFormProps {
+  postId: string;
+  pokemonName: string;
+  user: User | null;
+}
+
+const FanArtForm = ({ postId, pokemonName, user }: FanArtFormProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -76,6 +82,7 @@ const FanArtForm = ({ postId, user }: FanArtSectionProps) => {
       formData.append('content', content);
       formData.append('postId', postId);
       formData.append('writerId', user.id);
+      formData.append('pokemonName', pokemonName);
 
       createFanArt(formData);
     }

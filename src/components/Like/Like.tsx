@@ -62,7 +62,7 @@ function PocketLayout() {
   });
 
   return (
-    <div className="w-full m-3 flex flex-row gap-x-3">
+    <div className="w-full px-2 py-3 flex flex-row gap-x-3">
       <button onClick={() => addMutation.mutate()}>
         <span className="text-2xl">{getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART}</span>
         <span>{getLikes?.data?.length || '0'}</span>

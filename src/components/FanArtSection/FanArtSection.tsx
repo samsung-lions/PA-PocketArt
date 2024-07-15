@@ -1,11 +1,10 @@
 'use client';
 
-import { GET } from '@/app/api/fan-art/read/route';
+import { fetchNextPage } from '@/apis/fanArt';
 import supabase from '@/supabase/supabase';
-import { FanArt, FanArtSectionProps } from '@/types/FanArt.type';
+import { FanArt } from '@/types/FanArt.type';
 import { User } from '@supabase/supabase-js';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
-import { NextRequest } from 'next/server';
 import { useEffect, useRef, useState } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
@@ -14,12 +13,12 @@ import Pagination from '../Pagination';
 export const itemCountPerPage: number = 5;
 export const pageCountPerPage: number = 5;
 
-const fetchNextPage = async (postId: string, page: number) => {
-  const response = await GET(new Request(`/api/fan-art/read?postId=${postId}`) as unknown as NextRequest, page + 1);
-  return response.json();
-};
+interface FanArtSectionProps {
+  postId: string;
+  pokemonName: string;
+}
 
-const FanArtSection = ({ postId }: FanArtSectionProps) => {
+const FanArtSection = ({ postId, pokemonName }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState<number>(0);
@@ -28,7 +27,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   const { data: fanArts = [], isLoading } = useQuery({
-    queryKey: ['fanArt', { page: page + 1 }],
+    queryKey: ['fanArt', postId, { page: page + 1 }],
     queryFn: () => fetchNextPage(postId, page),
     placeholderData: keepPreviousData
   });
@@ -47,7 +46,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
 
   useEffect(() => {
     queryClient.prefetchQuery({
-      queryKey: ['fanArt', { page: page + 1 }],
+      queryKey: ['fanArt', postId, { page: page + 1 }],
       queryFn: () => fetchNextPage(postId, page)
     });
   }, [page, postId, queryClient]);
@@ -63,7 +62,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
 
   return (
     <section ref={sectionRef} className="w-full mt-1">
-      <FanArtForm postId={postId} user={user} />
+      <FanArtForm postId={postId} pokemonName={pokemonName} user={user} />
       <div>
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (

@@ -9,7 +9,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Button from '../Button';
 import ConfirmModal from '../ConfirmModal';
 
-const FanArtModal = ({ fanArt, user }: FanArtItemProps) => {
+const FanArtModal = ({ fanArt }: FanArtItemProps) => {
   const queryClient = useQueryClient();
 
   const toast = useToast();
@@ -60,7 +60,7 @@ const FanArtModal = ({ fanArt, user }: FanArtItemProps) => {
     };
 
     initializeImageFile();
-  }, []);
+  }, [fanArt.fanArtURL]);
 
   const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>): (() => void) | undefined => {
     const file = e.target.files?.[0];

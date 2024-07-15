@@ -1,40 +1,38 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { fetchPokemon } from '@/apis/pokemon';
 import supabase from '@/supabase/supabase';
 import { Pokemon } from '@/types/Pokemon.type';
-import axios from 'axios';
 import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import Spinner from '../Spinner';
 
-const fetchPokemon = async (id: string): Promise<Pokemon> => {
-  const response = await axios.get(`http://localhost:3000/api/pokemons/${id}`);
-  return response.data;
-};
-
 export const LikePokemon = () => {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [pokemonList, setPokemonList] = useState<Pokemon[] | undefined>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLikedPokemons = async () => {
+    const fetchLikedPokemons = async (): Promise<Pokemon[] | undefined> => {
       const {
         data: { user }
       } = await supabase.auth.getUser();
 
-      const { data, error } = await supabase.from('Likes').select('*').eq('userId', user.id);
-      if (error) {
-        throw error;
-      }
+      if (user) {
+        const { data, error } = await supabase.from('Likes').select('*').eq('userId', user.id);
 
-      const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
-      return await Promise.all(pokemonData);
+        if (error) {
+          throw error;
+        }
+
+        const pokemonData = data.map((item) => fetchPokemon(item.postId.toString()));
+        return await Promise.all(pokemonData);
+      }
     };
     fetchLikedPokemons()
       .then((data) => {
@@ -50,7 +48,7 @@ export const LikePokemon = () => {
   if (isLoading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
-  if (pokemonList.length === 0) {
+  if (!pokemonList) {
     return (
       <div className="p-6 rounded-lg shadow-xl h-[280px] flex items-center justify-center">
         <p
@@ -64,7 +62,8 @@ export const LikePokemon = () => {
   }
 
   return (
-    <div className="p-6 rounded-lg shadow-xl h-[280px] relative">
+    <div className="p-4 rounded-3xl shadow-lg w-[630px] h-[320px]">
+      <h2 className="text-[#ffD400] text-2xl font-bold mt-4 mb-6 text-center">My Pick</h2>
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={20}
@@ -77,20 +76,20 @@ export const LikePokemon = () => {
           clickable: true,
           bulletActiveClass: 'swiper-pagination-bullet-active'
         }}
-        className="mySwiper h-[250px]"
+        className="mySwiper h-[225px]"
       >
         {pokemonList.map((item) => (
           <SwiperSlide key={item.id} className="flex items-center justify-center">
-            <Link href={`/pokemons/${item.id}`} className="w-full h-full">
-              <div className="p-4 rounded-lg shadow-md transition-transform hover:scale-105 h-full flex flex-col justify-between">
-                <h3 className="text-xl font-semibold mb-2 text-center">{item.korean_name}</h3>
-                <div className="flex-grow flex items-center justify-center">
+            <Link href={`/pokemons/${item.id}`}>
+              <div className="w-[180px] h-[180px] p-4 rounded-lg shadow-md transition-transform hover:scale-110 flex flex-col justify-between">
+                <h3 className="text-xl font-semibold mb-4 text-center">{item.korean_name}</h3>
+                <div className="flex items-center justify-center">
                   <Image
                     src={item.sprites.front_default}
                     alt={item.name}
-                    width={120}
-                    height={120}
-                    className="rounded-full p-2"
+                    width={100}
+                    height={100}
+                    className="rounded-full"
                   />
                 </div>
               </div>

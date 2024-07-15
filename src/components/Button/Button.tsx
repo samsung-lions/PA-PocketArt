@@ -6,13 +6,16 @@ const buttonVariant = cva('font-semibold transition hover:brightness-110 active:
     intent: {
       main: 'rounded bg-[#FFD400] text-[#212121]',
       submit: 'border-b-2 border-[#212121] text-[#212121] hover:shadow-md',
-      cancel: 'border-b-2 border-slate-500 text-slate-500 hover:shadow-md'
+      cancel: 'border-b-2 border-slate-500 text-slate-500 hover:shadow-md',
+      logIn: 'rounded bg-[#FFD400] text-white',
+      signUp: 'border border-[#FFD400] text-[#FFD400] rounded'
     },
     size: {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-[15px]',
       lg: 'px-5 py-3 text-[17px]',
-      half: 'w-1/2 text-[15px] py-2'
+      half: 'w-1/2 text-[15px] py-2',
+      full: 'w-full text-[17px] py-2'
     },
     isDisabled: {
       true: 'cursor-not-allowed',

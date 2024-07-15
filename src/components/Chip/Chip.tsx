@@ -9,7 +9,7 @@ interface ChipProps {
 const chipVariants = cva('bg-white text-sm border rounded-full px-2.5 py-0.5', {
   variants: {
     intent: {
-      yellow: 'border-yellow-600 text-yellow-600',
+      yellow: 'border-amber-600 text-amber-600',
       green: 'border-green-600 text-green-600',
       default: 'border-gray-300 text-black'
     }
