@@ -18,7 +18,7 @@ function Header() {
   const toast = useToast();
 
   useEffect(() => {
-    async function getNickname() {
+    async function getNickname(): Promise<void> {
       if (!user) return;
       const { data, error } = await supabase.from('Users').select('nickname,profile_img').eq('id', user.id).single();
       if (error) {
@@ -31,55 +31,58 @@ function Header() {
     getNickname();
   }, [user, setUserInfo]);
 
-  const handleLogInClick = () => {
+  const handleLogInClick = (): void => {
     router.push('/log-in');
   };
-  const handleSignUpClick = () => {
+
+  const handleSignUpClick = (): void => {
     router.push('/sign-up');
   };
-  const handleMypageClick = () => {
+
+  const handleMypageClick = (): void => {
     router.push(`/mypage/${user?.id}`);
   };
 
-  const handleLogOutClick = async () => {
+  const handleLogOutClick = async (): Promise<void> => {
     await supabase.auth.signOut();
     logOutUser();
     toast.on({ label: '로그아웃 되었습니다' });
-    router.push('/');
+    router.replace('/');
   };
 
   return (
-    <div className="bg-black px-10 py-5 w-full flex items-center">
+    <div className="bg-black px-32 py-6 w-full flex items-center">
       <Link href="/">
         <Image src="/logo.png" alt="로고" width={70} height={50} />
       </Link>
-      <div className="ml-auto flex items-center space-x-4">
+      <div className="ml-auto">
         {loggedInUser ? (
-          <>
-            <div className="relative w-[50px] h-[50px] aspect-square">
-              <Image
-                onClick={handleMypageClick}
-                src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
-                alt="프로필 이미지"
-                fill
-                className="rounded-full hover:cursor-pointer object-contain"
-              />
+          <div className="flex items-center gap-x-8">
+            <div onClick={handleMypageClick} className="flex gap-x-4 justify-center items-center cursor-pointer">
+              <div className="relative w-[40px] h-[40px] aspect-square">
+                <Image
+                  src={userInfo.profile_img ? userInfo.profile_img : DefaultImage}
+                  alt="프로필 이미지"
+                  fill
+                  className="rounded-full object-contain border border-white"
+                />
+              </div>
+              <span className="text-white font-semibold">{userInfo.nickname}</span>
             </div>
 
-            <span className="text-white ">{userInfo.nickname}</span>
             <Button size={'lg'} type="button" onClick={handleLogOutClick}>
               로그아웃
             </Button>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="flex items-center gap-x-3">
             <Button size={'lg'} type="button" onClick={handleLogInClick}>
               로그인
             </Button>
-            <Button size={'lg'} type="button" onClick={handleSignUpClick}>
+            <Button intent={'signUp'} size={'lg'} type="button" onClick={handleSignUpClick}>
               회원가입
             </Button>
-          </>
+          </div>
         )}
       </div>
     </div>

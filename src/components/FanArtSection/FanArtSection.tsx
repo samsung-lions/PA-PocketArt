@@ -1,11 +1,10 @@
 'use client';
 
-import { GET } from '@/app/api/fan-art/read/route';
+import { fetchNextPage } from '@/apis/fanArt';
 import supabase from '@/supabase/supabase';
 import { FanArt } from '@/types/FanArt.type';
 import { User } from '@supabase/supabase-js';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
-import { NextRequest } from 'next/server';
 import { useEffect, useRef, useState } from 'react';
 import FanArtForm from '../FanArtForm';
 import FanArtItem from '../FanArtItem';
@@ -16,14 +15,10 @@ export const pageCountPerPage: number = 5;
 
 interface FanArtSectionProps {
   postId: string;
+  pokemonName: string;
 }
 
-const fetchNextPage = async (postId: string, page: number) => {
-  const response = await GET(new Request(`/api/fan-art/read?postId=${postId}`) as unknown as NextRequest, page + 1);
-  return response.json();
-};
-
-const FanArtSection = ({ postId }: FanArtSectionProps) => {
+const FanArtSection = ({ postId, pokemonName }: FanArtSectionProps) => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState<number>(0);
@@ -67,7 +62,7 @@ const FanArtSection = ({ postId }: FanArtSectionProps) => {
 
   return (
     <section ref={sectionRef} className="w-full mt-1">
-      <FanArtForm postId={postId} user={user} />
+      <FanArtForm postId={postId} pokemonName={pokemonName} user={user} />
       <div>
         <ul className="border rounded">
           {fanArts.fanArts.length > 0 ? (

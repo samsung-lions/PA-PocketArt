@@ -15,6 +15,7 @@ export type Database = {
           createdAt: string
           fanArtURL: string
           id: number
+          pokemonName: string | null
           postId: string
           writerId: string
         }
@@ -23,6 +24,7 @@ export type Database = {
           createdAt?: string
           fanArtURL: string
           id?: number
+          pokemonName?: string | null
           postId: string
           writerId?: string
         }
@@ -31,6 +33,7 @@ export type Database = {
           createdAt?: string
           fanArtURL?: string
           id?: number
+          pokemonName?: string | null
           postId?: string
           writerId?: string
         }

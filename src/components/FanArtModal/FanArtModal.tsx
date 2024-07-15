@@ -60,7 +60,7 @@ const FanArtModal = ({ fanArt }: FanArtItemProps) => {
     };
 
     initializeImageFile();
-  }, []);
+  }, [fanArt.fanArtURL]);
 
   const showFanArtPreview = (e: ChangeEvent<HTMLInputElement>): (() => void) | undefined => {
     const file = e.target.files?.[0];

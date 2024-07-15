@@ -5,12 +5,14 @@ export type FanArt = {
   content: string;
   fanArtURL: string;
   createdAt: string;
+  pokemonName: string;
   user: {
     id: string;
     nickname: string;
     profileURL: string | null;
   };
 };
+
 export type FanArts = {
   FanArts: FanArt[];
   count: number;

@@ -38,6 +38,7 @@ export async function GET(request: NextRequest, page: number) {
         content: fanArt.content,
         fanArtURL: 'https://wixafbbadrjlqppqupbt.supabase.co/storage/v1/object/public/' + fanArt.fanArtURL,
         createdAt: fanArt.createdAt.slice(0, 10),
+        pokemonName: fanArt.pokemonName || '',
         user: {
           id: user[0].id || '',
           nickname: user[0].nickname || 'writer',

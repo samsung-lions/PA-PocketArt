@@ -46,7 +46,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <form className="max-w-lg mx-auto mb-4" onSubmit={handleSearch}>
+    <form className="max-w-lg mx-auto mb-4 mt-4" onSubmit={handleSearch}>
       <div className="flex">
         <div className="relative flex-shrink-0 z-10">
           <button
@@ -105,7 +105,7 @@ const SearchBar: React.FC = () => {
           />
           <button
             type="submit"
-            className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-[#FFD400] rounded-e-lg border border-[#FFD400] hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300"
+            className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-[#FFD400] rounded-e-lg border border-[#FFD400] hover:scale-105 hover:brightness-110 active:brightness-125 transition"
           >
             <svg
               className="w-4 h-4"

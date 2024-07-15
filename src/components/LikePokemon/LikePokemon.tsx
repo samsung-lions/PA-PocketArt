@@ -1,7 +1,7 @@
 'use client';
+import { fetchPokemon } from '@/apis/pokemon';
 import supabase from '@/supabase/supabase';
 import { Pokemon } from '@/types/Pokemon.type';
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -11,11 +11,6 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Spinner from '../Spinner';
-
-const fetchPokemon = async (id: string): Promise<Pokemon> => {
-  const response = await axios.get(`http://localhost:3000/api/pokemons/${id}`);
-  return response.data;
-};
 
 export const LikePokemon = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[] | undefined>([]);
