@@ -1,7 +1,6 @@
 'use client';
 
 import { fetchPokemons, PAGE_SIZE } from '@/apis/pokemon';
-
 import { Pokemon } from '@/types/Pokemon.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
