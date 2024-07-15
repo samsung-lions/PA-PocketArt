@@ -39,7 +39,7 @@ const LogInPage = () => {
     } = await supabase.auth.getUser();
 
     if (!user) return;
-    //쥬스탠드 전역상태 저장
+
     logInUser(user);
     toast.on({ label: '로그인 성공!' });
     router.back();

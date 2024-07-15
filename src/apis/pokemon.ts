@@ -1,7 +1,7 @@
 import { Pokemon } from '@/types/Pokemon.type';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'http://localhost:3000';
 
 export const fetchPokemons = async ({ pageParam = 1 }: { pageParam: number }) => {
   const { data } = await axios.get(`/api/pokemons?page=${pageParam}`);
